@@ -6,31 +6,38 @@ namespace ManExe
 {
     public class Chunk
     {
-        public GameObject chunkObject;
-        MeshFilter meshFilter;
-        MeshCollider meshCollider;
-        MeshRenderer meshRenderer;
+        // === Game Components ===
+        private GameObject chunkObject;
+        private MeshFilter meshFilter;
+        private MeshCollider meshCollider;
+        private MeshRenderer meshRenderer;
 
+        // === References ===
         private World world;
 
-        Vector3Int chunkPosition;
 
-        float[,,] terrainMap;
+        // === Data ===
+        private ChunkData chunkData;
 
-        List<Vector3> vertices = new List<Vector3>();
-        List<int> triangles = new List<int>();
+        private List<Vector3> vertices = new List<Vector3>();
+        private List<int> triangles = new List<int>();
 
-        int Width { get { return GameData.ChunkWidth; } }
-        int Height { get { return GameData.ChunkHeight; } }
-        float TerrainSurface { get { return GameData.TerrainSurface; } }
 
-        public Chunk(Vector3Int _pos, World _world)
+        // === Properties ===
+        public Vector3Int Position { get { return chunkData.GlobalChunkPos; } }
+        private int Width { get { return GameData.ChunkWidth; } }
+        private int Height { get { return GameData.ChunkHeight; } }
+        private float TerrainSurface { get { return GameData.TerrainSurface; } }
+        //===============================
+        // === Constructors ===
+        //===============================
+        public Chunk(Vector3Int _pos, float[,] heightMap, World _world)
         {
             world = _world;
 
             chunkObject = new GameObject();
-            chunkPosition = _pos;
-            chunkObject.transform.position = chunkPosition;
+            chunkData = new ChunkData(_pos);
+            chunkObject.transform.position = _pos;
             chunkObject.name = string.Format("Chunk {0}, {1}", _pos.x, _pos.z);
 
             meshFilter = chunkObject.AddComponent<MeshFilter>();
@@ -38,13 +45,64 @@ namespace ManExe
             meshRenderer = chunkObject.AddComponent<MeshRenderer>();
             meshRenderer.material = Resources.Load<Material>("Materials/TerrainMaterial");
             chunkObject.transform.tag = "Terrain";
-            terrainMap = new float[Width + 1, Height + 1, Width + 1];
-            PopulateTerrainMap();
+            PopulateTerrainMap(heightMap);
+            CreateMeshData();
+
+        }
+        // ======= Public Methods ======
+        // =============================
+        public void PlaceTerrain(Vector3 pos)
+        {
+
+            Vector3Int v3Int = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), Mathf.CeilToInt(pos.z));
+            v3Int -= Position;
+            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z] = 0f;
             CreateMeshData();
 
         }
 
-        void CreateMeshData()
+        public void RemoveTerrain(Vector3 pos)
+        {
+
+            Vector3Int v3Int = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+            v3Int -= Position;
+            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z] = 1f;
+            CreateMeshData();
+
+        }
+
+        public void PopulateTerrainMap(float[,] heightMap)
+        {
+
+            // The data points for terrain are stored at the corners of our "cubes", so the terrainMap needs to be 1 larger
+            // than the width/height of our mesh.
+            for (int x = 0; x < Width + 1; x++)
+            {
+                for (int z = 0; z < Width + 1; z++)
+                {
+                    for (int y = 0; y < Height + 1; y++)
+                    {
+                        float thisHeight;
+
+                        // Get a terrain height using from height map from the world generator.
+                        thisHeight = heightMap[x + Position.x, z + Position.z];
+
+                        // Set the value of this point in the terrainMap.
+                        chunkData.VoxelMap[x, y, z] = (float)y - thisHeight;
+
+                    }
+                }
+            }
+        }
+
+        public void SetChunkParent(GameObject parent)
+        {
+            chunkObject.transform.SetParent(parent.transform);
+        }
+
+        // ====== Private Methods =======
+        // ==============================
+        private void CreateMeshData()
         {
 
             ClearMeshData();
@@ -68,32 +126,7 @@ namespace ManExe
 
         }
 
-        void PopulateTerrainMap()
-        {
-
-            // The data points for terrain are stored at the corners of our "cubes", so the terrainMap needs to be 1 larger
-            // than the width/height of our mesh.
-            for (int x = 0; x < Width + 1; x++)
-            {
-                for (int z = 0; z < Width + 1; z++)
-                {
-                    for (int y = 0; y < Height + 1; y++)
-                    {
-                        float thisHeight;
-
-                        // Get a terrain height using regular old Perlin noise.
-                        //thisHeight = GameData.GetTerrainHeight(x + chunkPosition.x, z + chunkPosition.z);
-                        thisHeight = world.heightMap[x + chunkPosition.x, z + chunkPosition.z];
-
-                        // Set the value of this point in the terrainMap.
-                        terrainMap[x, y, z] = (float)y - thisHeight;
-
-                    }
-                }
-            }
-        }
-
-        void MarchCube(Vector3Int position)
+        private void MarchCube(Vector3Int position)
         {
 
             // Sample terrain values at each corner of the cube.
@@ -156,7 +189,7 @@ namespace ManExe
             }
         }
 
-        int GetCubeConfiguration(float[] cube)
+        private int GetCubeConfiguration(float[] cube)
         {
 
             // Starting with a configuration of zero, loop through each point in the cube and check if it is below the terrain surface.
@@ -175,34 +208,14 @@ namespace ManExe
 
         }
 
-        public void PlaceTerrain(Vector3 pos)
+        private float SampleTerrain(Vector3Int point)
         {
 
-            Vector3Int v3Int = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), Mathf.CeilToInt(pos.z));
-            v3Int -= chunkPosition;
-            terrainMap[v3Int.x, v3Int.y, v3Int.z] = 0f;
-            CreateMeshData();
+            return chunkData.VoxelMap[point.x, point.y, point.z];
 
         }
 
-        public void RemoveTerrain(Vector3 pos)
-        {
-
-            Vector3Int v3Int = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
-            v3Int -= chunkPosition;
-            terrainMap[v3Int.x, v3Int.y, v3Int.z] = 1f;
-            CreateMeshData();
-
-        }
-
-        float SampleTerrain(Vector3Int point)
-        {
-
-            return terrainMap[point.x, point.y, point.z];
-
-        }
-
-        int VertForIndice(Vector3 vert)
+        private int VertForIndice(Vector3 vert)
         {
 
             // Loop through all the vertices currently in the vertices list.
@@ -221,7 +234,7 @@ namespace ManExe
 
         }
 
-        void ClearMeshData()
+        private void ClearMeshData()
         {
 
             vertices.Clear();
@@ -229,7 +242,7 @@ namespace ManExe
 
         }
 
-        void BuildMesh()
+        private void BuildMesh()
         {
 
             Mesh mesh = new Mesh();

@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 1405120347}
-  world: {fileID: 2094131445}
+  world: {fileID: 2094131447}
 --- !u!4 &1174071120
 Transform:
   m_ObjectHideFlags: 0
@@ -771,6 +771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2094131446}
   - component: {fileID: 2094131447}
+  - component: {fileID: 2094131448}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -802,6 +803,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6119b5a88d396546bdacae9b25b49c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 6dd56896f4e37924a86f609b876be5e1, type: 2}
+--- !u!114 &2094131448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094131445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb7753116a687f42847a947cbb63020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _timeOfDay: 360

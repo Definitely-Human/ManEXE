@@ -6,45 +6,42 @@ namespace ManExe
 {
     public class WorldGenerator : MonoBehaviour
     {
-        
-
-        Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
         public GameObject loadingScreen;
-        public GameObject world;
-        void Start()
+        public World world;
+
+        public float[,] heightMap;
+
+        
+        private void Start()
         {
+            heightMap = new float[GameData.ChunkHeight * world.Settings.WorldSize, GameData.ChunkHeight * world.Settings.WorldSize];
             Generate();
         }
 
-        void Generate()
+        private void Generate() // Generates world and destroys this game object
         {
-            world.GetComponent<World>().heightMap = Noise.GenerateNoiseMap(
-                GameData.ChunkHeight * GameData.WorldSizeInChunks,
-                GameData.ChunkHeight * GameData.WorldSizeInChunks,
-                GameData.seed, 75, 4, 0.5f, 1.75f, new Vector2());
-
             loadingScreen.SetActive(true);
-            for(int x = 0; x <GameData.WorldSizeInChunks; x++)
+            heightMap = Noise.GenerateNoiseMap(
+                GameData.ChunkHeight * world.Settings.WorldSize,
+                GameData.ChunkHeight * world.Settings.WorldSize,
+                world.Settings.Seed, 75, 4, 0.5f, 1.75f, new Vector2());
+
+            
+            for(int x = 0; x < world.Settings.WorldSize; x++)
             {
-                for (int z = 0; z < GameData.WorldSizeInChunks; z++)
+                for (int z = 0; z < world.Settings.WorldSize; z++)
                 {
                     Vector3Int chunkPos = new Vector3Int(x * GameData.ChunkWidth, 0, z * GameData.ChunkWidth);
-                    chunks.Add(chunkPos, new Chunk(chunkPos, world.GetComponent<World>()));
-                    chunks[chunkPos].chunkObject.transform.SetParent(world.transform);
+                    world.AddChunk(chunkPos,heightMap);
                 }
             }
             loadingScreen.SetActive(false);
-            Debug.Log(string.Format("{0} x {0} world generated.", (GameData.WorldSizeInChunks * GameData.ChunkWidth)));
+            Debug.Log(string.Format("{0} x {0} world generated.", (world.Settings.WorldSize * GameData.ChunkWidth)));
+
+            Destroy(gameObject);
         }
 
-        public Chunk GetChunkFromVector3(Vector3 _pos)
-        {
-            int x = (int)_pos.x;
-            int y = (int)_pos.y;
-            int z = (int)_pos.z;
-
-            return chunks[new Vector3Int(x, y, z)];
-        }
+        
 
     }
 

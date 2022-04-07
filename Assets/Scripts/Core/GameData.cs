@@ -8,56 +8,12 @@ namespace ManExe
     public static class GameData
     {
 
-        public static int WorldSizeInChunks = 20;
-
-        public static int seed = 69;
-
-        public static float TerrainSurface = 0.5f;
+        public static float TerrainSurface = 0.5f; // Terrain surface for each block
         public static int ChunkWidth = 16;
         public static int ChunkHeight = 250;
 
         public static float BaseTerrainHeight = 60f;
         public static float TerrainHeightRange = 40f;
-
-        public static float GetTerrainHeight(int x,int z)
-        {
-            return (float)TerrainHeightRange * Mathf.PerlinNoise((float)x / 16f * 1.5f + 0.001f, (float)z / 16f * 1.5f + 0.001f) + BaseTerrainHeight;
-            //return (float)TerrainHeightRange * Noise.GenerateNoiseMap(new Vector2(x, z), 123, 1.5f, 3, 0.5f, 2f) + BaseTerrainHeight;
-        }
-
-        public static float Get2DPerlinOct(Vector2 position, float offset, float scale, int octaves = 1, float persistance = 1, float lacunacrity = 1)
-        {
-            if (scale <= 0) scale = 0.00001f;
-
-
-            position = Offset2D(position, offset);
-            float noise = 0;
-
-            float amplitude = 1;
-            float frequency = 1;
-            for (int i = 0; i < octaves; i++)
-            {
-                float sampleX = (position.x) /  scale * frequency;
-                float sampleY = (position.y) /  scale * frequency;
-
-                float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-                noise = +perlinValue * amplitude;
-
-                amplitude *= persistance;
-                frequency *= lacunacrity;
-            }
-
-            noise = Mathf.InverseLerp(0, 1, noise);
-            return noise;
-
-        }
-
-        private static Vector2 Offset2D(Vector2 position, float offset)
-        {
-            position.x += (offset + seed + 0.1f);
-            position.y += (offset + seed + 0.1f);
-            return position;
-        }
 
         public static Vector3Int[] CornerTable = new Vector3Int[8] {
 
