@@ -372,6 +372,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 13751782774013641a30517e2e6eed53, type: 2}
+    - target: {fileID: 5866666021909216657, guid: f5ce249b98c12ec4abe6ed5d3d92ce07, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5ce249b98c12ec4abe6ed5d3d92ce07, type: 3}
 --- !u!1 &601504295
@@ -692,7 +696,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049185877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dc163ab08f908d428c6c8d4f8c549f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1212c45308415f242b87e2756e61516c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1335636994
