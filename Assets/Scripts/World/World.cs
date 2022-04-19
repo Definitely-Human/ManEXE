@@ -12,10 +12,10 @@ namespace ManExe
 
         // === Data ===
         private WorldData worldData;
-
+        private Vector3 _spawnPosition;
         // === Properties ===
         public LevelSettings Settings { get => settings; set => settings = value; }
-
+        public Vector3 SpawnPosition { get { return _spawnPosition; } set { _spawnPosition = value; } }
         //===============================
         // === GameObject Methods ===
         //===============================

@@ -8,7 +8,9 @@ namespace ManExe
     {
         public GameObject loadingScreen;
         public World world;
+        public GameObject playerPrefab;
 
+        [HideInInspector]
         public float[,] heightMap;
 
         
@@ -37,6 +39,11 @@ namespace ManExe
             }
             loadingScreen.SetActive(false);
             Debug.Log(string.Format("{0} x {0} world generated.", (world.Settings.WorldSize * GameData.ChunkWidth)));
+
+            world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSize /2, 
+                heightMap[GameData.ChunkWidth * world.Settings.WorldSize / 2, GameData.ChunkWidth * world.Settings.WorldSize / 2] + 1, 
+                GameData.ChunkWidth * world.Settings.WorldSize / 2);
+            Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
 
             Destroy(gameObject);
         }

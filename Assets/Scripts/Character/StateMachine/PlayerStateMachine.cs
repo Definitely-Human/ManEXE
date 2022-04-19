@@ -12,6 +12,7 @@ namespace ManExe
         private CharacterController _characterController;
         private Animator _animator;
         private Transform _cameraMainTransform;
+        private Transform _cameraAngleReference;
 
         // Variables to store optimized setter/getter parameter IDs
         private int _isWalkingHash;
@@ -92,6 +93,10 @@ namespace ManExe
             _animator = GetComponent<Animator>();
             _cameraMainTransform = Camera.main.transform;
 
+            _cameraAngleReference = new GameObject().transform;
+            _cameraAngleReference.name = "Camera Angle Reference";
+            _cameraAngleReference.SetParent(transform.parent);
+
             // Setup parameter hash
             _isWalkingHash = Animator.StringToHash("isWalking");
             _isRunningHash = Animator.StringToHash("isRunning");
@@ -120,28 +125,30 @@ namespace ManExe
 
             _characterController.Move(_appliedMovement * Time.deltaTime);
         }
-
-        private void AdjustMovmentFromCameraAngle()
+        private void OnEnable()
         {
-            Vector3 cameraAdjustedMovement = _cameraMainTransform.forward * _currentMovementInput.y + _cameraMainTransform.right * _currentMovementInput.x;
-            _currentMovement.x = cameraAdjustedMovement.x;
-            _currentMovement.z = cameraAdjustedMovement.z;
+            _gameInput.Player.Movement.started += OnMovementInput;
+            _gameInput.Player.Movement.performed += OnMovementInput;
+            _gameInput.Player.Movement.canceled += OnMovementInput;
+            _gameInput.Player.Run.started += OnRun;
+            _gameInput.Player.Run.canceled += OnRun;
+            _gameInput.Player.Jump.started += OnJump;
+            _gameInput.Player.Jump.canceled += OnJump;
+
+            _gameInput.Player.Enable();
         }
 
-        private void HandleRotation()
+        private void OnDisable()
         {
-            Vector3 positionToLookAt;
+            _gameInput.Player.Movement.started -= OnMovementInput;
+            _gameInput.Player.Movement.performed -= OnMovementInput;
+            _gameInput.Player.Movement.canceled -= OnMovementInput;
+            _gameInput.Player.Run.started -= OnRun;
+            _gameInput.Player.Run.canceled -= OnRun;
+            _gameInput.Player.Jump.started -= OnJump;
+            _gameInput.Player.Jump.canceled -= OnJump;
 
-            positionToLookAt.x = _currentMovement.x;
-            positionToLookAt.z = _currentMovement.z;
-            positionToLookAt.y = 0.0f;
-            Quaternion currentRotation = transform.rotation;
-
-            if (_isMovementPressed)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
-                transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
-            }
+            _gameInput.Player.Disable();
         }
 
         //========================
@@ -187,30 +194,36 @@ namespace ManExe
             _jumpGravities.Add(3, thirdJumpGravity);
         }
 
-        private void OnEnable()
+        private void AdjustMovmentFromCameraAngle()
         {
-            _gameInput.Player.Movement.started += OnMovementInput;
-            _gameInput.Player.Movement.performed += OnMovementInput;
-            _gameInput.Player.Movement.canceled += OnMovementInput;
-            _gameInput.Player.Run.started += OnRun;
-            _gameInput.Player.Run.canceled += OnRun;
-            _gameInput.Player.Jump.started += OnJump;
-            _gameInput.Player.Jump.canceled += OnJump;
+            _cameraAngleReference.eulerAngles = new Vector3(0, _cameraMainTransform.eulerAngles.y, 0); 
+            //Instead of taking the camera's forward Vector, use a reference Transform,
+            //which will take the camera's y euler axis as a reference, but not the x. So when camera looks down or up,
+            //it won't be affected by that, and it's forward vector will be just like camera is looking forward.
 
-            _gameInput.Player.Enable();
+            Vector3 cameraAdjustedMovement = _cameraAngleReference.forward * _currentMovementInput.y + _cameraAngleReference.right * _currentMovementInput.x;
+            _currentMovement.x = cameraAdjustedMovement.x;
+            _currentMovement.z = cameraAdjustedMovement.z;
         }
 
-        private void OnDisable()
+        private void HandleRotation()
         {
-            _gameInput.Player.Movement.started -= OnMovementInput;
-            _gameInput.Player.Movement.performed -= OnMovementInput;
-            _gameInput.Player.Movement.canceled -= OnMovementInput;
-            _gameInput.Player.Run.started -= OnRun;
-            _gameInput.Player.Run.canceled -= OnRun;
-            _gameInput.Player.Jump.started -= OnJump;
-            _gameInput.Player.Jump.canceled -= OnJump;
+            Vector3 positionToLookAt;
 
-            _gameInput.Player.Disable();
+            positionToLookAt.x = _currentMovement.x;
+            positionToLookAt.z = _currentMovement.z;
+            positionToLookAt.y = 0.0f;
+            Quaternion currentRotation = transform.rotation;
+
+            if (_isMovementPressed)
+            {
+                if (positionToLookAt != Vector3.zero)// Error message pops when you try to call a rotation method towards a vector zero (0,0,0) 
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
+
+                    transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
+                }
+            }
         }
     }
 }
