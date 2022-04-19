@@ -45,6 +45,7 @@ namespace ManExe
         }
         protected void SetSubState(PlayerBaseState newSubState) {
             _currentSubState = newSubState;
+            _currentSubState.EnterState();
             newSubState.SetSuperState(this);
         }
     

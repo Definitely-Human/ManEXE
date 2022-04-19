@@ -11,6 +11,7 @@ namespace ManExe
         private GameInput _gameInput;
         private CharacterController _characterController;
         private Animator _animator;
+        private Transform _cameraMainTransform;
 
         // Variables to store optimized setter/getter parameter IDs
         private int _isWalkingHash;
@@ -19,19 +20,16 @@ namespace ManExe
         private int _jumpCountHash;
         private int _isFallingHash;
 
-
-
         // Variables to store player input values
         private Vector2 _currentMovementInput;
         private Vector3 _currentMovement;
-        private Vector3 _currentRunMovement;
         private Vector3 _appliedMovement;
         private bool _isMovementPressed;
         private bool _isRunPressed;
 
         // Constants
         private float _rotationFactorPerFrame = 15.0f;
-        private float _runMultiplier = 3.5f; // TODO: make a property that gives speed multiplier
+        private float _runMultiplier = 3.5f; 
 
         // Gravity variables
         private float _gravity = -9.8f;
@@ -41,6 +39,7 @@ namespace ManExe
         private float _initialJumpVelocity;
         private float _maxJumpHeight = 1.0f;
         private float _maxJumpTime = 0.75f;
+        private float _fallSpeedLimit = -20.0f;
         private bool _isJumping = false;
         private bool _requireNewJumpPress = false;
         private int _jumpCount = 1;
@@ -73,13 +72,14 @@ namespace ManExe
         public bool RequireNewJumpPress { get => _requireNewJumpPress; set => _requireNewJumpPress = value; }
         public bool IsJumping { get => _isJumping; set => _isJumping = value; }
         public float CurrentMovementY { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
+        public float CurrentMovementX { get { return _currentMovement.x; } set { _currentMovement.x = value; } }
+        public float CurrentMovementZ { get { return _currentMovement.z; } set { _currentMovement.z = value; } }
         public float AppliedMovementX { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
         public float AppliedMovementY { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
         public float AppliedMovementZ { get { return _appliedMovement.z; } set { _appliedMovement.z = value; } }
         public float Gravity { get => _gravity; }
         public float RunMultiplier { get => _runMultiplier; set => _runMultiplier = value; }
-
-
+        public float FallSpeedLimit { get => _fallSpeedLimit; }
 
         //=====================
         // MonoBehavior methods
@@ -90,11 +90,7 @@ namespace ManExe
             _gameInput = new GameInput();
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
-
-            // Setup state
-            _states = new PlayerStateFactory(this);
-            _currentState = _states.Grounded();
-            _currentState.EnterState();
+            _cameraMainTransform = Camera.main.transform;
 
             // Setup parameter hash
             _isWalkingHash = Animator.StringToHash("isWalking");
@@ -103,13 +99,11 @@ namespace ManExe
             _jumpCountHash = Animator.StringToHash("jumpCount");
             _isFallingHash = Animator.StringToHash("isFalling");
 
-            _gameInput.Player.Movement.started += OnMovementInput;
-            _gameInput.Player.Movement.performed += OnMovementInput;
-            _gameInput.Player.Movement.canceled += OnMovementInput;
-            _gameInput.Player.Run.started += OnRun;
-            _gameInput.Player.Run.canceled += OnRun;
-            _gameInput.Player.Jump.started += OnJump;
-            _gameInput.Player.Jump.canceled += OnJump; // TODO Put these in OnEnable and OnDisable
+            // Setup state
+            _states = new PlayerStateFactory(this);
+            _currentState = _states.Grounded();
+            _currentState.EnterState();
+            
             SetupJumpVariables();
         }
         void Start()
@@ -120,20 +114,27 @@ namespace ManExe
         void Update()
         {
             HandleRotation();
+            AdjustMovmentFromCameraAngle();
 
             _currentState.UpdateStates();
+
             _characterController.Move(_appliedMovement * Time.deltaTime);
         }
 
+        private void AdjustMovmentFromCameraAngle()
+        {
+            Vector3 cameraAdjustedMovement = _cameraMainTransform.forward * _currentMovementInput.y + _cameraMainTransform.right * _currentMovementInput.x;
+            _currentMovement.x = cameraAdjustedMovement.x;
+            _currentMovement.z = cameraAdjustedMovement.z;
+        }
 
         private void HandleRotation()
         {
             Vector3 positionToLookAt;
 
             positionToLookAt.x = _currentMovement.x;
-            positionToLookAt.y = 0.0f;
             positionToLookAt.z = _currentMovement.z;
-
+            positionToLookAt.y = 0.0f;
             Quaternion currentRotation = transform.rotation;
 
             if (_isMovementPressed)
@@ -159,11 +160,8 @@ namespace ManExe
         private void OnMovementInput(InputAction.CallbackContext context)
         {
             _currentMovementInput = context.ReadValue<Vector2>();
-            _currentMovement.x = _currentMovementInput.x;
-            _currentMovement.z = _currentMovementInput.y;
-
-            _currentRunMovement.x = _currentMovementInput.x * _runMultiplier;
-            _currentRunMovement.z = _currentMovementInput.y * _runMultiplier;
+            //_currentMovement.x = _currentMovementInput.x;
+            //_currentMovement.z = _currentMovementInput.y;
             _isMovementPressed = _currentMovementInput.x != 0 || _currentMovementInput.y != 0;
         }
 
@@ -191,11 +189,27 @@ namespace ManExe
 
         private void OnEnable()
         {
+            _gameInput.Player.Movement.started += OnMovementInput;
+            _gameInput.Player.Movement.performed += OnMovementInput;
+            _gameInput.Player.Movement.canceled += OnMovementInput;
+            _gameInput.Player.Run.started += OnRun;
+            _gameInput.Player.Run.canceled += OnRun;
+            _gameInput.Player.Jump.started += OnJump;
+            _gameInput.Player.Jump.canceled += OnJump;
+
             _gameInput.Player.Enable();
         }
 
         private void OnDisable()
         {
+            _gameInput.Player.Movement.started -= OnMovementInput;
+            _gameInput.Player.Movement.performed -= OnMovementInput;
+            _gameInput.Player.Movement.canceled -= OnMovementInput;
+            _gameInput.Player.Run.started -= OnRun;
+            _gameInput.Player.Run.canceled -= OnRun;
+            _gameInput.Player.Jump.started -= OnJump;
+            _gameInput.Player.Jump.canceled -= OnJump;
+
             _gameInput.Player.Disable();
         }
     }

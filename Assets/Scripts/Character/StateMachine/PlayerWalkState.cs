@@ -43,8 +43,8 @@ namespace ManExe
 
         public override void UpdateState()
         {
-            Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x;
-            Ctx.AppliedMovementZ = Ctx.CurrentMovementInput.y;
+            Ctx.AppliedMovementX = Ctx.CurrentMovementX;
+            Ctx.AppliedMovementZ = Ctx.CurrentMovementZ;
             CheckSwitchStates(); // !Should always be at the bottom of Update State
         }
     }

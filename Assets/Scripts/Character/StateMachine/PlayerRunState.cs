@@ -43,8 +43,8 @@ namespace ManExe
 
         public override void UpdateState()
         {
-            Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x * Ctx.RunMultiplier;
-            Ctx.AppliedMovementZ = Ctx.CurrentMovementInput.y * Ctx.RunMultiplier;
+            Ctx.AppliedMovementX = Ctx.CurrentMovementX * Ctx.RunMultiplier;
+            Ctx.AppliedMovementZ = Ctx.CurrentMovementZ * Ctx.RunMultiplier;
             CheckSwitchStates(); // !Should always be at the bottom of Update State
         }
     }

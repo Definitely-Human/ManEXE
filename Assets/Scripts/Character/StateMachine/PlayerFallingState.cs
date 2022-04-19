@@ -46,7 +46,7 @@ namespace ManExe
         {
             float previousYVelocity = Ctx.CurrentMovementY;
             Ctx.CurrentMovementY = Ctx.CurrentMovementY + Ctx.Gravity * Time.deltaTime;
-            Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f,-20.0f);
+            Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f,Ctx.FallSpeedLimit);
         }
     }
 }

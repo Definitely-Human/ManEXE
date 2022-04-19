@@ -26,9 +26,7 @@ namespace ManExe
 
         public override void EnterState()
         {
-
             InitializeSubState();
-            HandleGravity(); // TODO: Try to move to Update
         }
 
         public override void ExitState()
@@ -60,6 +58,7 @@ namespace ManExe
 
         public override void UpdateState()
         {
+            HandleGravity();
             CheckSwitchStates(); // !Should always be at the bottom of Update State
         }
     }

@@ -57,7 +57,7 @@ namespace ManExe
             Ctx.IsJumping = true;
             Ctx.CurrentMovementY = Ctx.InitialJumpVelocities[Ctx.JumpCount];
             Ctx.AppliedMovementY = Ctx.InitialJumpVelocities[Ctx.JumpCount];
-            Ctx.Animator.SetInteger(Ctx.JumpCountHash, Ctx.JumpCount);// TODO: Put this into jumpCount SETTER
+            Ctx.Animator.SetInteger(Ctx.JumpCountHash, Ctx.JumpCount);// TODO: Put this into jumpCount SETTER, update jump count hash every time jump count updated
             if (Ctx.JumpCount < 3 && Ctx.JumpCount >= 1)
                 Ctx.JumpCount++;
             else
@@ -68,20 +68,12 @@ namespace ManExe
 
         public void HandleGravity()
         {
-            bool isFalling = Ctx.CurrentMovementY <= 0.0f || !Ctx.IsJumpPressed; // TODO Optimize isFalling condition
-            float fallMultiplier = 2.0f;
-            if (isFalling)
-            {
-                float previousYVelocity = Ctx.CurrentMovementY;
-                Ctx.CurrentMovementY = Ctx.CurrentMovementY + (Ctx.JumpGravities[Ctx.JumpCount] * fallMultiplier * Time.deltaTime);
-                Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f, -20.0f);
-            }
-            else
-            {
-                float previousYVelocity = Ctx.CurrentMovementY;
-                Ctx.CurrentMovementY = Ctx.CurrentMovementY + (Ctx.JumpGravities[Ctx.JumpCount] * Time.deltaTime);
-                Ctx.AppliedMovementY = (previousYVelocity + Ctx.CurrentMovementY) * .5f;
-            }
+            bool isFalling = Ctx.CurrentMovementY <= 0.0f || !Ctx.IsJumpPressed; 
+            float fallMultiplier = isFalling ? 2.0f : 1.0f; // If falling increase gravity by 2
+            float previousYVelocity = Ctx.CurrentMovementY;
+            Ctx.CurrentMovementY = Ctx.CurrentMovementY + (Ctx.JumpGravities[Ctx.JumpCount] * fallMultiplier * Time.deltaTime);
+            Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f, Ctx.FallSpeedLimit);
+           
         }
 
         private IEnumerator IJumpResetRoutine()
