@@ -6,18 +6,30 @@ namespace ManExe
 {
     public class WorldGenerator : MonoBehaviour
     {
-        public GameObject loadingScreen;
-        public World world;
-        public GameObject playerPrefab;
+        [SerializeField] private GameObject loadingScreen;
+        [SerializeField] private World world;
+        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private bool _destroyAfterGeneration;
 
-        [HideInInspector]
-        public float[,] heightMap;
+        private PlacementGenerator _placementGenerator;
 
-        
+        private float[,] heightMap;
+
+        private void Awake()
+        {
+
+            heightMap = new float[GameData.ChunkHeight * world.Settings.WorldSize, GameData.ChunkHeight * world.Settings.WorldSize];
+            _placementGenerator = GetComponent<PlacementGenerator>();
+        }
+
         private void Start()
         {
-            heightMap = new float[GameData.ChunkHeight * world.Settings.WorldSize, GameData.ChunkHeight * world.Settings.WorldSize];
             Generate();
+            _placementGenerator.Generate();
+
+
+            if (_destroyAfterGeneration)
+                Destroy(gameObject);
         }
 
         private void Generate() // Generates world and destroys this game object
@@ -45,7 +57,7 @@ namespace ManExe
                 GameData.ChunkWidth * world.Settings.WorldSize / 2);
             Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
 
-            Destroy(gameObject);
+            
         }
 
         
