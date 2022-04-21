@@ -13,16 +13,35 @@ namespace ManExe
         // === Data ===
         private WorldData worldData;
         private Vector3 _spawnPosition;
+        private GameObject _placementsContainer;
         // === Properties ===
         public LevelSettings Settings { get => settings; set => settings = value; }
         public Vector3 SpawnPosition { get { return _spawnPosition; } set { _spawnPosition = value; } }
+
+        public int WorldSizeInVoxelsX { get { return Settings.WorldSizeInChunksX * GameData.ChunkWidth; } }
+        public int WorldSizeInVoxelsY { get { return Settings.WorldSizeInChunksX * GameData.ChunkWidth; } }
+
+        public GameObject Placements {
+            get { 
+                if (_placementsContainer != null) { return _placementsContainer; }
+                else
+                {
+                    _placementsContainer = new GameObject();
+                    _placementsContainer.transform.SetParent(transform);
+                    _placementsContainer.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
+                    _placementsContainer.transform.name = "Placements";
+                    return _placementsContainer;
+                }
+            }
+        }
+
         //===============================
         // === GameObject Methods ===
         //===============================
 
         private void Awake()
         {
-            worldData = new WorldData("Default", 123);
+            worldData = new WorldData("Default", Settings.Seed);
         }
 
 

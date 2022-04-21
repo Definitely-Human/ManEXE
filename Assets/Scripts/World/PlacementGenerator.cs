@@ -12,7 +12,7 @@ namespace ManExe
 
 
         [Header("Raycast Settings")]
-        [SerializeField] private int _density;
+        [SerializeField] private float _density;
 
         [SerializeField] private Vector2 _xRange;
         [SerializeField] private Vector2 _zRange;
@@ -20,14 +20,14 @@ namespace ManExe
 
         public PlacementSettings[] Placements { get => _placements; set => _placements = value; }
         public World World { get => _world; set => _world = value; }
-        public int Density { get => _density; set => _density = value; }
+        public float Density { get => _density; set => _density = value; }
         public Vector2 XRange { get => _xRange; set => _xRange = value; }
         public Vector2 ZRange { get => _zRange; set => _zRange = value; }
 
         private void Awake()
         {
-            XRange = new Vector2(0, GameData.ChunkWidth * World.Settings.WorldSize);
-            ZRange = new Vector2(0, GameData.ChunkWidth * World.Settings.WorldSize);
+            XRange = new Vector2(0, World.WorldSizeInVoxelsX);
+            ZRange = new Vector2(0, World.WorldSizeInVoxelsY);
         }
 
 #if UNITY_EDITOR
@@ -37,7 +37,7 @@ namespace ManExe
             
             for (int n = 0; n < Placements.Length; n++)
             {
-                int densityCalculated = Density * Placements[n].Density * World.Settings.WorldSize^2;
+                int densityCalculated = Mathf.FloorToInt(Density * Placements[n].Density * World.Settings.WorldSizeInChunksX * World.Settings.WorldSizeInChunksY);
                 for (int i = 0; i < densityCalculated; i++)
                 {
                     float sampleX = Random.Range(XRange.x, XRange.y);
@@ -50,7 +50,7 @@ namespace ManExe
                     if (hit.point.y < Placements[n].MinHeight)
                         continue;
 
-                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(Placements[n].Prefab, transform);
+                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(Placements[n].Prefab, World.Placements.transform);
                     instantiatedPrefab.transform.position = hit.point;
                     instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(Placements[n].RotationRange.x, Placements[n].RotationRange.y), Space.Self);
                     instantiatedPrefab.transform.rotation = Quaternion.Lerp(transform.rotation,
@@ -66,9 +66,9 @@ namespace ManExe
 
         public void Clear()
         {
-            while (transform.childCount != 0)
+            while (World.Placements.transform.childCount != 0)
             {
-                DestroyImmediate(transform.GetChild(0).gameObject);
+                DestroyImmediate(World.Placements.transform.GetChild(0).gameObject);
             }
         }
 #endif

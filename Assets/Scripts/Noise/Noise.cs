@@ -5,8 +5,7 @@ namespace ManExe
 {
 	public static class Noise
 	{
-
-		public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+		public static float[,] GenerateNoise(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
 		{
 			float[,] noiseMap = new float[mapWidth, mapHeight];
 
@@ -42,8 +41,8 @@ namespace ManExe
 
 					for (int i = 0; i < octaves; i++)
 					{
-						float sampleX = (x - halfWidth) / scale * frequency + octaveOffsets[i].x;
-						float sampleY = (y - halfHeight) / scale * frequency + octaveOffsets[i].y;
+						float sampleX = (x - halfWidth) / scale * frequency + octaveOffsets[i].x * frequency ;
+						float sampleY = (y - halfHeight) / scale * frequency - octaveOffsets[i].y * frequency;
 
 						float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
 						noiseHeight += perlinValue * amplitude;
@@ -68,7 +67,22 @@ namespace ManExe
 			{
 				for (int x = 0; x < mapWidth; x++)
 				{
-					noiseMap[x, y] = GameData.TerrainHeightRange * Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]) + GameData.BaseTerrainHeight;
+					noiseMap[x, y] =  Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]);
+				}
+			}
+
+			return noiseMap;
+		}
+
+		public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+		{
+			float[,] noiseMap = GenerateNoise(mapWidth, mapHeight, seed, scale, octaves, persistance, lacunarity, offset);
+
+			for (int y = 0; y < mapHeight; y++)
+			{
+				for (int x = 0; x < mapWidth; x++)
+				{
+					noiseMap[x, y] = GameData.TerrainHeightRange * noiseMap[x, y] + GameData.BaseTerrainHeight;
 				}
 			}
 

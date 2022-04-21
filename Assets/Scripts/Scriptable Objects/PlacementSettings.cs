@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ManExe
 {
-    [CreateAssetMenu(fileName = "New PlacementSettings", menuName = "PlacementSettings", order = 0)]
+    [CreateAssetMenu(fileName = "New PlacementSettings", menuName = "Scriptable/PlacementSettings", order = 0)]
     public class PlacementSettings : ScriptableObject
     {
         [SerializeField] private string _name;
