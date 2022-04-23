@@ -8,19 +8,8 @@ namespace ManExe
     {
 
 		public Renderer textureRender;
-		public bool autoUpdate;
 		public LevelSettings levelSettings;
-
-		[SerializeField] private int _seed;
-		[SerializeField] private int _worldSizeInChunksX;
-		[SerializeField] private int _worldSizeInChunksY;
-		[SerializeField] private float _scale;
-		[SerializeField] private int _octaves;
-		[SerializeField, Range(0, 1)] private float _persistance;
-		[SerializeField] private float _lacunarity;
-		[SerializeField] private Vector2 _offset;
-
-
+		public bool AutoUpdate;
 
 		private void Awake()
         {
@@ -43,18 +32,14 @@ namespace ManExe
 
         public void DrawNoiseMap(float[,] noiseMap = null)
 		{
-			GenerateRenderer();
+			if (textureRender == null)
+				return;
+			textureRender.gameObject.transform.position = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 2, 0, levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 2);
+			textureRender.transform.localScale = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 10,
+				1,
+				levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 10);
 
-			if(noiseMap == null)
-			noiseMap = Noise.GenerateNoise(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth + 1,
-				levelSettings.WorldSizeInChunksY * GameData.ChunkWidth + 1,
-				levelSettings.Seed,
-				levelSettings.NoiseSettings.Scale,
-				levelSettings.NoiseSettings.Octaves,
-				levelSettings.NoiseSettings.Persistance,
-				levelSettings.NoiseSettings.Lacunarity,
-				levelSettings.NoiseSettings.Offset
-				);
+			noiseMap = Noise.GenerateNoise(levelSettings);
 
 
 
@@ -77,50 +62,34 @@ namespace ManExe
 			textureRender.sharedMaterial.mainTexture = texture;
 		}
 
+		public void OnValuesChange()
+        {
+            if (!Application.isPlaying)
+            {
+				DrawNoiseMap();
+            }
+        }
+
 		public void Clear()
         {
+
 			if (textureRender != null)
 				DestroyImmediate(textureRender.gameObject);
 		}
 
         private void OnValidate()
         {
-			levelSettings.Seed = _seed;
 
-			if (_worldSizeInChunksX < 1)
-				_worldSizeInChunksX = 1;
-			levelSettings.WorldSizeInChunksX = _worldSizeInChunksX;
-
-			if (_worldSizeInChunksY < 1)
-				_worldSizeInChunksY = 1;
-			levelSettings.WorldSizeInChunksY = _worldSizeInChunksY;
-
-			levelSettings.NoiseSettings.Scale = _scale;
-
-			if (_octaves < 1)
+			if(levelSettings != null)
+            {
+				levelSettings.OnValuesUpdated -= OnValuesChange;
+				levelSettings.OnValuesUpdated += OnValuesChange;
+            }
+			if(levelSettings.NoiseSettings != null)
 			{
-				_octaves = 1;
+				levelSettings.NoiseSettings.OnValuesUpdated -= OnValuesChange;
+				levelSettings.NoiseSettings.OnValuesUpdated += OnValuesChange;
 			}
-			levelSettings.NoiseSettings.Octaves = _octaves;
-
-			if (_lacunarity < 1)
-			{
-				_lacunarity = 1;
-			}
-			levelSettings.NoiseSettings.Lacunarity = _lacunarity;
-
-			if (_persistance < 0)
-			{
-				_persistance = 0;
-			}
-			if (_persistance > 1)
-			{
-				_persistance = 1;
-			}
-			levelSettings.NoiseSettings.Persistance = _persistance;
-
-			levelSettings.NoiseSettings.Offset = _offset;
-
-        }
+		}
     }
 }

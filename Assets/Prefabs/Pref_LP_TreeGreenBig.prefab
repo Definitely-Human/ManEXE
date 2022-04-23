@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9136356826928450869}
   - component: {fileID: 5288641815351001744}
-  - component: {fileID: 7962910581396534874}
   - component: {fileID: 8737094730777914072}
   m_Layer: 0
   m_Name: Pref_LP_TreeGreenBig
@@ -29,7 +28,8 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 71.70645, y: 91.65257, z: 124.42503}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5412973416536452758}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -41,49 +41,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8467062570689845135}
   m_Mesh: {fileID: -4008867264132674213, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
---- !u!23 &7962910581396534874
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8467062570689845135}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 4563267435917723080, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
-  - {fileID: -2023478865643069695, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
-  - {fileID: 6121247561286903219, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &8737094730777914072
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -98,3 +55,53 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4008867264132674213, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+--- !u!1001 &5518044075681696125
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9136356826928450869}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+      propertyPath: m_Name
+      value: LP_TreeGreenBig
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+--- !u!4 &5412973416536452758 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a77951846e4077648a1e97b8e7121ce3, type: 3}
+  m_PrefabInstance: {fileID: 5518044075681696125}
+  m_PrefabAsset: {fileID: 0}

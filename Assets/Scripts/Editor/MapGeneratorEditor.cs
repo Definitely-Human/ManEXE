@@ -15,7 +15,7 @@ namespace ManExe
 			
 			if (DrawDefaultInspector())
 			{
-				if (mapGen.autoUpdate)
+				if (mapGen.AutoUpdate)
 				{
 					mapGen.DrawNoiseMap();
 				}

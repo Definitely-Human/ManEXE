@@ -12,9 +12,6 @@ namespace ManExe
         public static int ChunkWidth = 16;
         public static int ChunkHeight = 250;
 
-        public static float BaseTerrainHeight = 60f;
-        public static float TerrainHeightRange = 40f;
-
         public static Vector3Int[] CornerTable = new Vector3Int[8] {
 
         new Vector3Int(0, 0, 0),

@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a086e9ef6abcf6438415e52a3ca1ee1, type: 3}
-  m_Name: Default
+  m_Name: Mountains
   m_EditorClassIdentifier: 
-  autoUpdate: 1
-  _seed: 69
-  _worldSizeInChunksX: 20
-  _worldSizeInChunksY: 20
-  _noiseSettings: {fileID: 11400000, guid: 6605692acc3368f4bb8a80056c1c5f20, type: 2}
-  _baseTerrainHeight: 60
-  _terrainHeightRange: 40
+  autoUpdate: 0
+  _seed: 70
+  _worldSizeInChunksX: 40
+  _worldSizeInChunksY: 40
+  _noiseSettings: {fileID: 11400000, guid: 40cc1b773134ba54dab31815b9e46cf2, type: 2}
+  _baseTerrainHeight: 40
+  _terrainHeightRange: 200
   _placableConfigData:
   - PlacementSettings: {fileID: 11400000, guid: d925d1270dea1324cbe4550aef3c5156, type: 2}
     _density: 10
-    _minHeight: 60
+    _minHeight: 40
     _maxHeight: 100
   - PlacementSettings: {fileID: 11400000, guid: c9a3313bec252e7439aed949724a3573, type: 2}
     _density: 50
-    _minHeight: 60
-    _maxHeight: 90
-  - PlacementSettings: {fileID: 11400000, guid: a2ebf27805fabe44da78a710c716cea1, type: 2}
-    _density: 30
-    _minHeight: 60
-    _maxHeight: 75
+    _minHeight: 40
+    _maxHeight: 120
   - PlacementSettings: {fileID: 11400000, guid: 72844fe4c7f8b3446bb9de48b9f5e3fe, type: 2}
     _density: 30
-    _minHeight: 85
-    _maxHeight: 100
+    _minHeight: 95
+    _maxHeight: 125
   - PlacementSettings: {fileID: 11400000, guid: 2cb3256fd8c06b6468d64c3ac55b9617, type: 2}
     _density: 50
-    _minHeight: 60
-    _maxHeight: 90
+    _minHeight: 40
+    _maxHeight: 200
   - PlacementSettings: {fileID: 11400000, guid: 546a8e101ded1da449d26476dec99c9d, type: 2}
     _density: 10
-    _minHeight: 60
-    _maxHeight: 90
+    _minHeight: 80
+    _maxHeight: 200
+  - PlacementSettings: {fileID: 11400000, guid: f8ab60e1638d0bb44a2a6f150a34f738, type: 2}
+    _density: 5
+    _minHeight: 100
+    _maxHeight: 200

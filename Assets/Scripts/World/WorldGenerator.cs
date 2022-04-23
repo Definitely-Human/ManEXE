@@ -39,15 +39,7 @@ namespace ManExe
 
             loadingScreen.SetActive(true);
 
-            heightMap = Noise.GenerateNoiseMap(
-                world.WorldSizeInVoxelsX + 1,
-                world.WorldSizeInVoxelsY + 1,
-                world.Settings.Seed, 
-                world.Settings.NoiseSettings.Scale,
-                world.Settings.NoiseSettings.Octaves,
-                world.Settings.NoiseSettings.Persistance,
-                world.Settings.NoiseSettings.Lacunarity,
-                world.Settings.NoiseSettings.Offset);
+            heightMap = Noise.GenerateNoiseMap(world.Settings);
 
             for(int x = 0; x < world.Settings.WorldSizeInChunksX; x++)
             {
@@ -61,7 +53,7 @@ namespace ManExe
             Debug.Log(string.Format("{0} x {1} world generated.", world.WorldSizeInVoxelsX, world.WorldSizeInVoxelsY));
 
             world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2, 
-                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 1, 
+                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 3, 
                 GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2);
             Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
 

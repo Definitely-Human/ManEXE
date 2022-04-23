@@ -7,7 +7,6 @@ namespace ManExe
 {
     public class PlacementGenerator : MonoBehaviour
     {
-        [SerializeField] private PlacementSettings[] _placements;
         [SerializeField] private World _world;
 
 
@@ -18,7 +17,7 @@ namespace ManExe
         [SerializeField] private Vector2 _zRange;
 
 
-        public PlacementSettings[] Placements { get => _placements; set => _placements = value; }
+        public PlacableConfigData[] Placements { get => _world.Settings.PlacableConfigData; }
         public World World { get => _world; set => _world = value; }
         public float Density { get => _density; set => _density = value; }
         public Vector2 XRange { get => _xRange; set => _xRange = value; }
@@ -30,7 +29,6 @@ namespace ManExe
             ZRange = new Vector2(0, World.WorldSizeInVoxelsY);
         }
 
-#if UNITY_EDITOR
         public void Generate()
         {
             Clear();
@@ -50,15 +48,15 @@ namespace ManExe
                     if (hit.point.y < Placements[n].MinHeight)
                         continue;
 
-                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(Placements[n].Prefab, World.Placements.transform);
+                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(Placements[n].PlacementSettings.Prefab, World.Placements.transform);
                     instantiatedPrefab.transform.position = hit.point;
-                    instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(Placements[n].RotationRange.x, Placements[n].RotationRange.y), Space.Self);
+                    instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(Placements[n].PlacementSettings.RotationRange.x, Placements[n].PlacementSettings.RotationRange.y), Space.Self);
                     instantiatedPrefab.transform.rotation = Quaternion.Lerp(transform.rotation,
-                        transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), Placements[n].RotateTwardsNormal);
+                        transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), Placements[n].PlacementSettings.RotateTwardsNormal);
                     instantiatedPrefab.transform.localScale = new Vector3(
-                        Random.Range(Placements[n].MinScale.x, Placements[n].MaxScale.x),
-                        Random.Range(Placements[n].MinScale.y, Placements[n].MaxScale.y),
-                        Random.Range(Placements[n].MinScale.z, Placements[n].MaxScale.z)
+                        Random.Range(Placements[n].PlacementSettings.MinScale.x, Placements[n].PlacementSettings.MaxScale.x),
+                        Random.Range(Placements[n].PlacementSettings.MinScale.y, Placements[n].PlacementSettings.MaxScale.y),
+                        Random.Range(Placements[n].PlacementSettings.MinScale.z, Placements[n].PlacementSettings.MaxScale.z)
                     );
                 }
             }
@@ -71,7 +69,6 @@ namespace ManExe
                 DestroyImmediate(World.Placements.transform.GetChild(0).gameObject);
             }
         }
-#endif
 
     }
 }
