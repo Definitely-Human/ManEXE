@@ -14,6 +14,7 @@ namespace ManExe
         [SerializeField] private bool _generatePlacements;
 
         private PlacementGenerator _placementGenerator;
+        private GrassGenerator _grassGenerator;
 
         private float[,] heightMap;
 
@@ -21,6 +22,7 @@ namespace ManExe
         {
 
             _placementGenerator = GetComponent<PlacementGenerator>();
+            _grassGenerator = GetComponent<GrassGenerator>();
         }
 
         private void Start()
@@ -46,14 +48,15 @@ namespace ManExe
                 for (int z = 0; z < world.Settings.WorldSizeInChunksY; z++)
                 {
                     Vector3Int chunkPos = new Vector3Int(x * GameData.ChunkWidth, 0, z * GameData.ChunkWidth);
-                    world.AddChunk(chunkPos,heightMap);
+                    Chunk chunk = world.AddChunk(chunkPos,heightMap);
+                    _grassGenerator.GenerateGrass(chunk.GameObject);
                 }
             }
             
             Debug.Log(string.Format("{0} x {1} world generated.", world.WorldSizeInVoxelsX, world.WorldSizeInVoxelsY));
 
             world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2, 
-                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 3, 
+                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 10, 
                 GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2);
             Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
 

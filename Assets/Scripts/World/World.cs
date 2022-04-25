@@ -47,10 +47,11 @@ namespace ManExe
 
         // === Public Methods ===
         //===============================
-        public void AddChunk(Vector3Int chunkPos, float[,] heightMap) {
+        public Chunk AddChunk(Vector3Int chunkPos, float[,] heightMap) {
             Chunk chunk = new Chunk(chunkPos, heightMap, GetComponent<World>());
             worldData.Chunks.Add(chunkPos,chunk);
             chunk.SetChunkParent(gameObject);
+            return chunk;
 
         }
 

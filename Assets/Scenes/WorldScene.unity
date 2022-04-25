@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 1174071119}
   - component: {fileID: 1174071121}
   - component: {fileID: 1174071122}
+  - component: {fileID: 1174071123}
   m_Layer: 0
   m_Name: WorldGenerator
   m_TagString: Untagged
@@ -584,6 +585,36 @@ MonoBehaviour:
   textureRender: {fileID: 1030451567}
   levelSettings: {fileID: 11400000, guid: 63f610d74ababe944a32d29bb684df75, type: 2}
   AutoUpdate: 1
+--- !u!114 &1174071123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174071118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4a296460cb4fe48bc7452823946793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassComputeShader: {fileID: 7200000, guid: 2d0635252604b2c49898335aaf9f2deb, type: 3}
+  material: {fileID: 2100000, guid: 2b066676807609849b61459235e9e392, type: 2}
+  grassSettings:
+    maxSegments: 3
+    maxBendAngle: 0
+    bladeCurvature: 1
+    bladeHeight: 1
+    bladeHeightVariance: 0.1
+    bladeWidth: 1
+    bladeWidthVariance: 0.1
+    windNoiseTexture: {fileID: 0}
+    windTextureScale: 1
+    windPeriod: 1
+    windScale: 1
+    windAmplitude: 0
+    cameraLODMin: 3
+    cameraLODMax: 30
+    cameraLODFactor: 1
 --- !u!1 &1384620324
 GameObject:
   m_ObjectHideFlags: 0
