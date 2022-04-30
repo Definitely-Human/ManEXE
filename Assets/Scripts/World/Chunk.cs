@@ -7,7 +7,7 @@ namespace ManExe
     public class Chunk
     {
         // === Game Components ===
-        private GameObject chunkObject;
+        private GameObject _chunkObject;
         private MeshFilter meshFilter;
         private MeshCollider meshCollider;
         private MeshRenderer meshRenderer;
@@ -28,6 +28,9 @@ namespace ManExe
         private int Width { get { return GameData.ChunkWidth; } }
         private int Height { get { return GameData.ChunkHeight; } }
         private float TerrainSurface { get { return GameData.TerrainSurface; } }
+
+        public GameObject GameObject { get => _chunkObject; set => _chunkObject = value; }
+
         //===============================
         // === Constructors ===
         //===============================
@@ -35,16 +38,16 @@ namespace ManExe
         {
             world = _world;
 
-            chunkObject = new GameObject();
+            _chunkObject = new GameObject();
             chunkData = new ChunkData(_pos);
-            chunkObject.transform.position = _pos;
-            chunkObject.name = string.Format("Chunk {0}, {1}", _pos.x, _pos.z);
+            _chunkObject.transform.position = _pos;
+            _chunkObject.name = string.Format("Chunk {0}, {1}", _pos.x, _pos.z);
 
-            meshFilter = chunkObject.AddComponent<MeshFilter>();
-            meshCollider = chunkObject.AddComponent<MeshCollider>();
-            meshRenderer = chunkObject.AddComponent<MeshRenderer>();
+            meshFilter = _chunkObject.AddComponent<MeshFilter>();
+            meshCollider = _chunkObject.AddComponent<MeshCollider>();
+            meshRenderer = _chunkObject.AddComponent<MeshRenderer>();
             meshRenderer.material = Resources.Load<Material>("Materials/TerrainMaterial");
-            chunkObject.transform.tag = "Terrain";
+            _chunkObject.transform.tag = "Terrain";
             PopulateTerrainMap(heightMap);
             CreateMeshData();
 
@@ -97,7 +100,7 @@ namespace ManExe
 
         public void SetChunkParent(GameObject parent)
         {
-            chunkObject.transform.SetParent(parent.transform);
+            _chunkObject.transform.SetParent(parent.transform);
         }
 
         // ====== Private Methods =======

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace ManExe
 {
     public class WorldGenerator : MonoBehaviour
@@ -10,54 +11,58 @@ namespace ManExe
         [SerializeField] private World world;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private bool _destroyAfterGeneration;
+        [SerializeField] private bool _generatePlacements;
+        [SerializeField] private bool _generateGrass;
 
         private PlacementGenerator _placementGenerator;
+        private GrassGenerator _grassGenerator;
 
         private float[,] heightMap;
 
         private void Awake()
         {
 
-            heightMap = new float[GameData.ChunkHeight * world.Settings.WorldSize, GameData.ChunkHeight * world.Settings.WorldSize];
             _placementGenerator = GetComponent<PlacementGenerator>();
+            _grassGenerator = GetComponent<GrassGenerator>();
         }
 
         private void Start()
         {
             Generate();
-            _placementGenerator.Generate();
+            if(_generatePlacements)
+                _placementGenerator.Generate();
 
 
             if (_destroyAfterGeneration)
                 Destroy(gameObject);
         }
 
-        private void Generate() // Generates world and destroys this game object
+        public void Generate() // Generates world and destroys this game object
         {
-            loadingScreen.SetActive(true);
-            heightMap = Noise.GenerateNoiseMap(
-                GameData.ChunkHeight * world.Settings.WorldSize,
-                GameData.ChunkHeight * world.Settings.WorldSize,
-                world.Settings.Seed, 75, 4, 0.5f, 1.75f, new Vector2());
 
-            
-            for(int x = 0; x < world.Settings.WorldSize; x++)
+            loadingScreen.SetActive(true);
+
+            heightMap = Noise.GenerateNoiseMap(world.Settings);
+
+            for(int x = 0; x < world.Settings.WorldSizeInChunksX; x++)
             {
-                for (int z = 0; z < world.Settings.WorldSize; z++)
+                for (int z = 0; z < world.Settings.WorldSizeInChunksY; z++)
                 {
                     Vector3Int chunkPos = new Vector3Int(x * GameData.ChunkWidth, 0, z * GameData.ChunkWidth);
-                    world.AddChunk(chunkPos,heightMap);
+                    Chunk chunk = world.AddChunk(chunkPos,heightMap);
+                    if( _generateGrass)
+                        _grassGenerator.GenerateGrass(chunk.GameObject);
                 }
             }
-            loadingScreen.SetActive(false);
-            Debug.Log(string.Format("{0} x {0} world generated.", (world.Settings.WorldSize * GameData.ChunkWidth)));
+            
+            Debug.Log(string.Format("{0} x {1} world generated.", world.WorldSizeInVoxelsX, world.WorldSizeInVoxelsY));
 
-            world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSize /2, 
-                heightMap[GameData.ChunkWidth * world.Settings.WorldSize / 2, GameData.ChunkWidth * world.Settings.WorldSize / 2] + 1, 
-                GameData.ChunkWidth * world.Settings.WorldSize / 2);
+            world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2, 
+                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 10, 
+                GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2);
             Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
 
-            
+            loadingScreen.SetActive(false);
         }
 
         

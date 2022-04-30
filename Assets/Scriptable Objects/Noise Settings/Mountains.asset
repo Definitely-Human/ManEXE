@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e551a130826e0749a90addddb4320c0, type: 3}
+  m_Name: Mountains
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  _scale: 345.31
+  _octaves: 6
+  _persistance: 0.44
+  _lacunarity: 1.82
+  _offset: {x: 0, y: 0}
+  _heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.016951112
+      value: -0.00000062352046
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.36373684
+      value: 0.06128896
+      inSlope: 0.100914136
+      outSlope: 0.100914136
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.60257375
+      value: 0.1719615
+      inSlope: 0.58843696
+      outSlope: 0.58843696
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.7714307
+      value: 0.3906361
+      inSlope: 1.3559111
+      outSlope: 1.3559111
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6506188
+    - serializedVersion: 3
+      time: 0.87711203
+      value: 0.7967651
+      inSlope: 3.3637931
+      outSlope: 3.3637931
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.99544525
+      value: 0.99375224
+      inSlope: 1.4992099
+      outSlope: 1.4992099
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
