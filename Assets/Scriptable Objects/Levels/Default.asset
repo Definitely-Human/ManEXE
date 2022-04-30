@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   _seed: 69
-  _worldSizeInChunksX: 20
-  _worldSizeInChunksY: 20
+  _worldSizeInChunksX: 15
+  _worldSizeInChunksY: 15
   _noiseSettings: {fileID: 11400000, guid: 6605692acc3368f4bb8a80056c1c5f20, type: 2}
   _baseTerrainHeight: 60
   _terrainHeightRange: 40

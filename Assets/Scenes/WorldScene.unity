@@ -496,8 +496,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030451566}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 320, y: 0, z: 320}
-  m_LocalScale: {x: 64, y: 1, z: 64}
+  m_LocalPosition: {x: 120, y: 0, z: 120}
+  m_LocalScale: {x: 24, y: 1, z: 24}
   m_Children: []
   m_Father: {fileID: 1174071120}
   m_RootOrder: 0
@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureRender: {fileID: 1030451567}
-  levelSettings: {fileID: 11400000, guid: 63f610d74ababe944a32d29bb684df75, type: 2}
+  levelSettings: {fileID: 11400000, guid: 6dd56896f4e37924a86f609b876be5e1, type: 2}
   AutoUpdate: 1
 --- !u!114 &1174071123
 MonoBehaviour:
@@ -601,13 +601,13 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 2b066676807609849b61459235e9e392, type: 2}
   grassSettings:
     maxSegments: 3
-    maxBendAngle: 0
-    bladeCurvature: 1
-    bladeHeight: 1
+    maxBendAngle: 0.49
+    bladeCurvature: 2
+    bladeHeight: 0.5
     bladeHeightVariance: 0.1
-    bladeWidth: 1
+    bladeWidth: 0.15
     bladeWidthVariance: 0.1
-    windNoiseTexture: {fileID: 0}
+    windNoiseTexture: {fileID: 2800000, guid: 48bebdf4920bbbc4fa72184ed862f719, type: 3}
     windTextureScale: 1
     windPeriod: 1
     windScale: 1

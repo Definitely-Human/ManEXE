@@ -12,6 +12,7 @@ namespace ManExe
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private bool _destroyAfterGeneration;
         [SerializeField] private bool _generatePlacements;
+        [SerializeField] private bool _generateGrass;
 
         private PlacementGenerator _placementGenerator;
         private GrassGenerator _grassGenerator;
@@ -49,7 +50,8 @@ namespace ManExe
                 {
                     Vector3Int chunkPos = new Vector3Int(x * GameData.ChunkWidth, 0, z * GameData.ChunkWidth);
                     Chunk chunk = world.AddChunk(chunkPos,heightMap);
-                    _grassGenerator.GenerateGrass(chunk.GameObject);
+                    if( _generateGrass)
+                        _grassGenerator.GenerateGrass(chunk.GameObject);
                 }
             }
             

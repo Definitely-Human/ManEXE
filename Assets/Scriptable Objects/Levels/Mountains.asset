@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a086e9ef6abcf6438415e52a3ca1ee1, type: 3}
   m_Name: Mountains
   m_EditorClassIdentifier: 
-  autoUpdate: 0
+  autoUpdate: 1
   _seed: 70
-  _worldSizeInChunksX: 40
-  _worldSizeInChunksY: 40
+  _worldSizeInChunksX: 15
+  _worldSizeInChunksY: 15
   _noiseSettings: {fileID: 11400000, guid: 40cc1b773134ba54dab31815b9e46cf2, type: 2}
   _baseTerrainHeight: 40
   _terrainHeightRange: 200
