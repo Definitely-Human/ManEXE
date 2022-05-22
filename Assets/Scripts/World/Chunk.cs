@@ -21,7 +21,7 @@ namespace ManExe
 
         private List<Vector3> vertices = new List<Vector3>();
         private List<int> triangles = new List<int>();
-
+        private List<Vector2> uvs = new List<Vector2>();
 
         // === Properties ===
         public Vector3Int Position { get { return chunkData.GlobalChunkPos; } }
@@ -42,11 +42,16 @@ namespace ManExe
             chunkData = new ChunkData(_pos);
             _chunkObject.transform.position = _pos;
             _chunkObject.name = string.Format("Chunk {0}, {1}", _pos.x, _pos.z);
+            _chunkObject.layer = 6;
 
             meshFilter = _chunkObject.AddComponent<MeshFilter>();
             meshCollider = _chunkObject.AddComponent<MeshCollider>();
             meshRenderer = _chunkObject.AddComponent<MeshRenderer>();
             meshRenderer.material = Resources.Load<Material>("Materials/TerrainMaterial");
+            
+            meshRenderer.material.SetTexture("_Albedo", world.TerrainTexArray);
+            meshRenderer.material.SetTexture("_Normal", world.TerrainNorArray);
+            //meshRenderer.material.SetFloatArray("_Tiling", world.TerrainScales);
             _chunkObject.transform.tag = "Terrain";
             PopulateTerrainMap(heightMap);
             CreateMeshData();
@@ -59,7 +64,7 @@ namespace ManExe
 
             Vector3Int v3Int = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), Mathf.CeilToInt(pos.z));
             v3Int -= Position;
-            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z] = 0f;
+            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z].DistToSurface = 0f;
             CreateMeshData();
 
         }
@@ -69,7 +74,7 @@ namespace ManExe
 
             Vector3Int v3Int = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
             v3Int -= Position;
-            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z] = 1f;
+            chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z].DistToSurface = 1f;
             CreateMeshData();
 
         }
@@ -91,7 +96,8 @@ namespace ManExe
                         thisHeight = heightMap[x + Position.x, z + Position.z];
 
                         // Set the value of this point in the terrainMap.
-                        chunkData.VoxelMap[x, y, z] = (float)y - thisHeight;
+                        int blockTypeInd = Mathf.Clamp(Mathf.RoundToInt((float)(y - world.Settings.BaseTerrainHeight) / (float)world.Settings.TerrainHeightRange * world.TerrainTextures.Length),0, world.TerrainTypes.Length-1);
+                        chunkData.VoxelMap[x, y, z] = new TerrainPoint((float)y - thisHeight,blockTypeInd);
 
                     }
                 }
@@ -184,7 +190,7 @@ namespace ManExe
                     // Calculate the point along the edge that passes through.
                     vertPosition = vert1 + ((vert2 - vert1) * difference);
 
-                    triangles.Add(VertForIndice(vertPosition));
+                    triangles.Add(VertForIndice(vertPosition, position));
 
                     edgeIndex++;
 
@@ -214,11 +220,11 @@ namespace ManExe
         private float SampleTerrain(Vector3Int point)
         {
 
-            return chunkData.VoxelMap[point.x, point.y, point.z];
+            return chunkData.VoxelMap[point.x, point.y, point.z].DistToSurface;
 
         }
 
-        private int VertForIndice(Vector3 vert)
+        private int VertForIndice(Vector3 vert, Vector3Int point)
         {
 
             // Loop through all the vertices currently in the vertices list.
@@ -233,6 +239,8 @@ namespace ManExe
 
             // If we didn't find a match, add this vert to the list and return last index.
             vertices.Add(vert);
+            TerrainType terrainType = world.TerrainTypes[chunkData.VoxelMap[point.x, point.y, point.z].TerrainTypeID];
+            uvs.Add(new Vector2(terrainType.TopTexID,terrainType.SideTexID));
             return vertices.Count - 1;
 
         }
@@ -242,7 +250,7 @@ namespace ManExe
 
             vertices.Clear();
             triangles.Clear();
-
+            uvs.Clear();
         }
 
         private void BuildMesh()
@@ -251,10 +259,11 @@ namespace ManExe
             Mesh mesh = new Mesh();
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
+
+            mesh.uv = uvs.ToArray();
             mesh.RecalculateNormals();
             meshFilter.mesh = mesh;
             meshCollider.sharedMesh = mesh;
-
         }
 
 

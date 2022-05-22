@@ -13,6 +13,7 @@ namespace ManExe
         private Animator _animator;
         private Transform _cameraMainTransform;
         private Transform _cameraAngleReference;
+        private World _world;
 
         // Variables to store optimized setter/getter parameter IDs
         private int _isWalkingHash;
@@ -27,10 +28,13 @@ namespace ManExe
         private Vector3 _appliedMovement;
         private bool _isMovementPressed;
         private bool _isRunPressed;
+        private bool _requreBreakBlock;
+        private bool _requrePlaceBlock;
 
         // Constants
         private float _rotationFactorPerFrame = 15.0f;
-        private float _runMultiplier = 3.5f; 
+        private float _runMultiplier = 3.5f;
+        private int _layerMask;
 
         // Gravity variables
         private float _gravity = -9.8f;
@@ -92,6 +96,7 @@ namespace ManExe
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _cameraMainTransform = Camera.main.transform;
+            _world = GameObject.Find("World").GetComponent<World>();
 
             _cameraAngleReference = new GameObject().transform;
             _cameraAngleReference.name = "Camera Angle Reference";
@@ -108,7 +113,10 @@ namespace ManExe
             _states = new PlayerStateFactory(this);
             _currentState = _states.Grounded();
             _currentState.EnterState();
-            
+
+
+            _layerMask = 1 << 6;
+
             SetupJumpVariables();
         }
         void Start()
@@ -121,10 +129,49 @@ namespace ManExe
             HandleRotation();
             AdjustMovmentFromCameraAngle();
 
+
+            HandlePlacementAndDestruction();
+
             _currentState.UpdateStates();
 
             _characterController.Move(_appliedMovement * Time.deltaTime);
+
+            
         }
+
+        private void HandlePlacementAndDestruction()
+        {
+            if (_requrePlaceBlock)
+            {
+                Ray ray = _cameraMainTransform.gameObject.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, 10, _layerMask))
+                {
+                    Debug.Log("Ray hit " + hit.ToString());
+                        _world.GetChunkFromVector3(hit.transform.position).PlaceTerrain(hit.point);
+                    
+
+                }
+                _requrePlaceBlock = false;
+            }
+
+            if (_requreBreakBlock)
+            {
+
+                Ray ray = _cameraMainTransform.gameObject.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit,10, _layerMask))
+                {
+                    _world.GetChunkFromVector3(hit.transform.position).RemoveTerrain(hit.point);
+                    
+
+                }
+                _requreBreakBlock = false;
+            }
+        }
+
         private void OnEnable()
         {
             _gameInput.Player.Movement.started += OnMovementInput;
@@ -134,6 +181,8 @@ namespace ManExe
             _gameInput.Player.Run.canceled += OnRun;
             _gameInput.Player.Jump.started += OnJump;
             _gameInput.Player.Jump.canceled += OnJump;
+            _gameInput.Player.MouseLeft.started += OnLeftMouseClick;
+            _gameInput.Player.MouseRight.started += OnRightMouseClick;
 
             _gameInput.Player.Enable();
         }
@@ -147,6 +196,8 @@ namespace ManExe
             _gameInput.Player.Run.canceled -= OnRun;
             _gameInput.Player.Jump.started -= OnJump;
             _gameInput.Player.Jump.canceled -= OnJump;
+            _gameInput.Player.MouseLeft.started -= OnLeftMouseClick;
+            _gameInput.Player.MouseRight.started -= OnRightMouseClick;
 
             _gameInput.Player.Disable();
         }
@@ -162,6 +213,16 @@ namespace ManExe
         {
             _isJumpPressed = context.ReadValueAsButton();
             _requireNewJumpPress = false;
+        }
+
+        private void OnLeftMouseClick(InputAction.CallbackContext context)
+        {
+            _requreBreakBlock = true;
+        }
+
+        private void OnRightMouseClick(InputAction.CallbackContext context)
+        {
+            _requrePlaceBlock = true;
         }
 
         private void OnMovementInput(InputAction.CallbackContext context)

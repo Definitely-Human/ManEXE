@@ -14,7 +14,7 @@ namespace ManExe
         private int z;
         
         [HideInInspector]
-        private float[,,] voxelMap = new float[GameData.ChunkWidth + 1, GameData.ChunkHeight + 1, GameData.ChunkWidth + 1];
+        private TerrainPoint[,,] voxelMap = new TerrainPoint[GameData.ChunkWidth + 1, GameData.ChunkHeight + 1, GameData.ChunkWidth + 1];
 
         // === Properties ===
 
@@ -29,7 +29,7 @@ namespace ManExe
             }
         }
 
-        public float[,,] VoxelMap { get => voxelMap; }
+        public TerrainPoint[,,] VoxelMap { get => voxelMap; }
 
         public ChunkData(Vector3Int pos)
         {
