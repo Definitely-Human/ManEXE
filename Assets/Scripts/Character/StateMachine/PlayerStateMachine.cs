@@ -96,7 +96,7 @@ namespace ManExe
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _cameraMainTransform = Camera.main.transform;
-            _world = GameObject.Find("World").GetComponent<World>();
+            //_world = GameObject.Find("World").GetComponent<World>();
 
             _cameraAngleReference = new GameObject().transform;
             _cameraAngleReference.name = "Camera Angle Reference";
