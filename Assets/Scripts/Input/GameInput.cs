@@ -100,16 +100,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MouseLeft"",
-                    ""type"": ""Button"",
-                    ""id"": ""de9517b4-866e-45a2-8f47-b205128907b0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseRight"",
+                    ""name"": ""Use"",
                     ""type"": ""Button"",
                     ""id"": ""3dfc814a-a593-4884-a53b-8b395bdad538"",
                     ""expectedControlType"": ""Button"",
@@ -253,23 +244,12 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1981c267-1ccf-4e12-9e9e-061df1230880"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a40927ce-fb19-48b9-b37b-f54e09a8d664"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseRight"",
+                    ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -417,6 +397,74 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cheats"",
+            ""id"": ""97c7424e-1000-45a4-a09d-e5388e567a9a"",
+            ""actions"": [
+                {
+                    ""name"": ""DebugMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""5647a6d4-ea05-45c1-9b70-ecdda9513185"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""b33a6eab-cc07-42a1-b8d3-2c430b4031d0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SaveLoadMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""2257847c-8931-4288-900e-19062809eac2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7269fdaf-bc71-48f6-83b0-ca2f8cef164d"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a911992-313f-4d3b-9b8e-b4e9de2876c8"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97d47bfd-8bb4-43f8-8970-501be4928429"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SaveLoadMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -437,14 +485,18 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Camera = m_Player.FindAction("Camera", throwIfNotFound: true);
-        m_Player_MouseLeft = m_Player.FindAction("MouseLeft", throwIfNotFound: true);
-        m_Player_MouseRight = m_Player.FindAction("MouseRight", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_MoveSelection = m_Menu.FindAction("Move Selection", throwIfNotFound: true);
         m_Menu_Confirm = m_Menu.FindAction("Confirm", throwIfNotFound: true);
         m_Menu_Cancel = m_Menu.FindAction("Cancel", throwIfNotFound: true);
         m_Menu_Unpause = m_Menu.FindAction("Unpause", throwIfNotFound: true);
+        // Cheats
+        m_Cheats = asset.FindActionMap("Cheats", throwIfNotFound: true);
+        m_Cheats_DebugMenu = m_Cheats.FindAction("DebugMenu", throwIfNotFound: true);
+        m_Cheats_Console = m_Cheats.FindAction("Console", throwIfNotFound: true);
+        m_Cheats_SaveLoadMenu = m_Cheats.FindAction("SaveLoadMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -512,8 +564,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Camera;
-    private readonly InputAction m_Player_MouseLeft;
-    private readonly InputAction m_Player_MouseRight;
+    private readonly InputAction m_Player_Use;
     public struct PlayerActions
     {
         private @GameInput m_Wrapper;
@@ -526,8 +577,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Camera => m_Wrapper.m_Player_Camera;
-        public InputAction @MouseLeft => m_Wrapper.m_Player_MouseLeft;
-        public InputAction @MouseRight => m_Wrapper.m_Player_MouseRight;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -561,12 +611,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @Camera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamera;
                 @Camera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamera;
                 @Camera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamera;
-                @MouseLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLeft;
-                @MouseLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLeft;
-                @MouseLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLeft;
-                @MouseRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRight;
-                @MouseRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRight;
-                @MouseRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRight;
+                @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -595,12 +642,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @Camera.started += instance.OnCamera;
                 @Camera.performed += instance.OnCamera;
                 @Camera.canceled += instance.OnCamera;
-                @MouseLeft.started += instance.OnMouseLeft;
-                @MouseLeft.performed += instance.OnMouseLeft;
-                @MouseLeft.canceled += instance.OnMouseLeft;
-                @MouseRight.started += instance.OnMouseRight;
-                @MouseRight.performed += instance.OnMouseRight;
-                @MouseRight.canceled += instance.OnMouseRight;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -662,6 +706,55 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         }
     }
     public MenuActions @Menu => new MenuActions(this);
+
+    // Cheats
+    private readonly InputActionMap m_Cheats;
+    private ICheatsActions m_CheatsActionsCallbackInterface;
+    private readonly InputAction m_Cheats_DebugMenu;
+    private readonly InputAction m_Cheats_Console;
+    private readonly InputAction m_Cheats_SaveLoadMenu;
+    public struct CheatsActions
+    {
+        private @GameInput m_Wrapper;
+        public CheatsActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DebugMenu => m_Wrapper.m_Cheats_DebugMenu;
+        public InputAction @Console => m_Wrapper.m_Cheats_Console;
+        public InputAction @SaveLoadMenu => m_Wrapper.m_Cheats_SaveLoadMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Cheats; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CheatsActions set) { return set.Get(); }
+        public void SetCallbacks(ICheatsActions instance)
+        {
+            if (m_Wrapper.m_CheatsActionsCallbackInterface != null)
+            {
+                @DebugMenu.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnDebugMenu;
+                @DebugMenu.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnDebugMenu;
+                @DebugMenu.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnDebugMenu;
+                @Console.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnConsole;
+                @Console.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnConsole;
+                @Console.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnConsole;
+                @SaveLoadMenu.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
+                @SaveLoadMenu.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
+                @SaveLoadMenu.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
+            }
+            m_Wrapper.m_CheatsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DebugMenu.started += instance.OnDebugMenu;
+                @DebugMenu.performed += instance.OnDebugMenu;
+                @DebugMenu.canceled += instance.OnDebugMenu;
+                @Console.started += instance.OnConsole;
+                @Console.performed += instance.OnConsole;
+                @Console.canceled += instance.OnConsole;
+                @SaveLoadMenu.started += instance.OnSaveLoadMenu;
+                @SaveLoadMenu.performed += instance.OnSaveLoadMenu;
+                @SaveLoadMenu.canceled += instance.OnSaveLoadMenu;
+            }
+        }
+    }
+    public CheatsActions @Cheats => new CheatsActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -681,8 +774,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
-        void OnMouseLeft(InputAction.CallbackContext context);
-        void OnMouseRight(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
@@ -690,5 +782,11 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         void OnConfirm(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnUnpause(InputAction.CallbackContext context);
+    }
+    public interface ICheatsActions
+    {
+        void OnDebugMenu(InputAction.CallbackContext context);
+        void OnConsole(InputAction.CallbackContext context);
+        void OnSaveLoadMenu(InputAction.CallbackContext context);
     }
 }

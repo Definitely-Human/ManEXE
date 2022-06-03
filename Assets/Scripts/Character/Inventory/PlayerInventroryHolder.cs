@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace ManExe
 {
-
     [RequireComponent(typeof(UniqueID))]
     public class PlayerInventroryHolder : InventoryHolder
     {
-
-
         public static UnityAction OnPlayerInventoryChanged;
         public static UnityAction<InventorySystem, int> OnPlayerInventoryDisplayRequested;
 
@@ -22,7 +17,7 @@ namespace ManExe
 
         private void Update()
         {
-            if (Keyboard.current.bKey.wasPressedThisFrame)  OnPlayerInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, hotbarLength);
+            if (Keyboard.current.bKey.wasPressedThisFrame) OnPlayerInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, hotbarLength);
         }
 
         private void OnEnable()

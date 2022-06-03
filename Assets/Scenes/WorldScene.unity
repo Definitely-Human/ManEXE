@@ -536,7 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 1405120347}
   world: {fileID: 2094131447}
-  playerPrefab: {fileID: 4685997328841664393, guid: 83d842bc768002d4d944d503325c3925, type: 3}
+  playerPrefab: {fileID: 4258207842839265234, guid: 28fabcf595bdf254797ba0dda27b45a0, type: 3}
   _destroyAfterGeneration: 0
   _generatePlacements: 1
   _generateGrass: 1

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -41,6 +40,7 @@ namespace ManExe
 
         // Jump varialbes
         private bool _isJumpPressed = false;
+
         private float _initialJumpVelocity;
         private float _maxJumpHeight = 1.0f;
         private float _maxJumpTime = 0.75f;
@@ -54,14 +54,17 @@ namespace ManExe
         private Coroutine _currentJumpResetRoutine = null;
 
         // State variables
-        PlayerBaseState _currentState;
-        PlayerStateFactory _states;
+        private PlayerBaseState _currentState;
+
+        private PlayerStateFactory _states;
 
         // Getters and setters
-        public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+        public PlayerBaseState CurrentState
+        { get { return _currentState; } set { _currentState = value; } }
+
         public Animator Animator { get => _animator; set => _animator = value; }
         public Dictionary<int, float> InitialJumpVelocities { get => _initialJumpVelocities; }
-        public Dictionary<int, float> JumpGravities { get => _jumpGravities;  }
+        public Dictionary<int, float> JumpGravities { get => _jumpGravities; }
         public Coroutine CurrentJumpResetRoutine { get => _currentJumpResetRoutine; set => _currentJumpResetRoutine = value; }
         public CharacterController CharacterController { get => _characterController; set => _characterController = value; }
         public Vector2 CurrentMovementInput { get => _currentMovementInput; set => _currentMovementInput = value; }
@@ -72,16 +75,24 @@ namespace ManExe
         public int IsRunningHash { get => _isRunningHash; }
         public int JumpCountHash { get => _jumpCountHash; }
         public int IsFallingHash { get => _isFallingHash; }
-        public bool IsMovementPressed { get { return _isMovementPressed; } }
-        public bool IsRunPressed { get { return _isRunPressed; } }
+        public bool IsMovementPressed
+        { get { return _isMovementPressed; } }
+        public bool IsRunPressed
+        { get { return _isRunPressed; } }
         public bool RequireNewJumpPress { get => _requireNewJumpPress; set => _requireNewJumpPress = value; }
         public bool IsJumping { get => _isJumping; set => _isJumping = value; }
-        public float CurrentMovementY { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
-        public float CurrentMovementX { get { return _currentMovement.x; } set { _currentMovement.x = value; } }
-        public float CurrentMovementZ { get { return _currentMovement.z; } set { _currentMovement.z = value; } }
-        public float AppliedMovementX { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
-        public float AppliedMovementY { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
-        public float AppliedMovementZ { get { return _appliedMovement.z; } set { _appliedMovement.z = value; } }
+        public float CurrentMovementY
+        { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
+        public float CurrentMovementX
+        { get { return _currentMovement.x; } set { _currentMovement.x = value; } }
+        public float CurrentMovementZ
+        { get { return _currentMovement.z; } set { _currentMovement.z = value; } }
+        public float AppliedMovementX
+        { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
+        public float AppliedMovementY
+        { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
+        public float AppliedMovementZ
+        { get { return _appliedMovement.z; } set { _appliedMovement.z = value; } }
         public float Gravity { get => _gravity; }
         public float RunMultiplier { get => _runMultiplier; set => _runMultiplier = value; }
         public float FallSpeedLimit { get => _fallSpeedLimit; }
@@ -114,29 +125,26 @@ namespace ManExe
             _currentState = _states.Grounded();
             _currentState.EnterState();
 
-
             _layerMask = 1 << 6;
 
             SetupJumpVariables();
         }
-        void Start()
+
+        private void Start()
         {
             _characterController.Move(_appliedMovement * Time.deltaTime);
         }
 
-        void Update()
+        private void Update()
         {
             HandleRotation();
             AdjustMovmentFromCameraAngle();
-
 
             HandlePlacementAndDestruction();
 
             _currentState.UpdateStates();
 
             _characterController.Move(_appliedMovement * Time.deltaTime);
-
-            
         }
 
         private void HandlePlacementAndDestruction()
@@ -149,24 +157,19 @@ namespace ManExe
                 if (Physics.Raycast(ray, out hit, 10, _layerMask))
                 {
                     Debug.Log("Ray hit " + hit.ToString());
-                        _world.GetChunkFromVector3(hit.transform.position).PlaceTerrain(hit.point);
-                    
-
+                    _world.GetChunkFromVector3(hit.transform.position).PlaceTerrain(hit.point);
                 }
                 _requrePlaceBlock = false;
             }
 
             if (_requreBreakBlock)
             {
-
                 Ray ray = _cameraMainTransform.gameObject.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
                 RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit,10, _layerMask))
+                if (Physics.Raycast(ray, out hit, 10, _layerMask))
                 {
                     _world.GetChunkFromVector3(hit.transform.position).RemoveTerrain(hit.point);
-                    
-
                 }
                 _requreBreakBlock = false;
             }
@@ -181,8 +184,8 @@ namespace ManExe
             _gameInput.Player.Run.canceled += OnRun;
             _gameInput.Player.Jump.started += OnJump;
             _gameInput.Player.Jump.canceled += OnJump;
-            _gameInput.Player.MouseLeft.started += OnLeftMouseClick;
-            _gameInput.Player.MouseRight.started += OnRightMouseClick;
+            //_gameInput.Player.MouseLeft.started += OnLeftMouseClick;
+            //_gameInput.Player.MouseRight.started += OnRightMouseClick;
 
             _gameInput.Player.Enable();
         }
@@ -196,8 +199,6 @@ namespace ManExe
             _gameInput.Player.Run.canceled -= OnRun;
             _gameInput.Player.Jump.started -= OnJump;
             _gameInput.Player.Jump.canceled -= OnJump;
-            _gameInput.Player.MouseLeft.started -= OnLeftMouseClick;
-            _gameInput.Player.MouseRight.started -= OnRightMouseClick;
 
             _gameInput.Player.Disable();
         }
@@ -234,7 +235,7 @@ namespace ManExe
         }
 
         //========================
-        // Methods 
+        // Methods
         private void SetupJumpVariables()
         {
             float timeToApex = _maxJumpTime / 2;
@@ -257,7 +258,7 @@ namespace ManExe
 
         private void AdjustMovmentFromCameraAngle()
         {
-            _cameraAngleReference.eulerAngles = new Vector3(0, _cameraMainTransform.eulerAngles.y, 0); 
+            _cameraAngleReference.eulerAngles = new Vector3(0, _cameraMainTransform.eulerAngles.y, 0);
             //Instead of taking the camera's forward Vector, use a reference Transform,
             //which will take the camera's y euler axis as a reference, but not the x. So when camera looks down or up,
             //it won't be affected by that, and it's forward vector will be just like camera is looking forward.
@@ -278,7 +279,7 @@ namespace ManExe
 
             if (_isMovementPressed)
             {
-                if (positionToLookAt != Vector3.zero)// Error message pops when you try to call a rotation method towards a vector zero (0,0,0) 
+                if (positionToLookAt != Vector3.zero)// Error message pops when you try to call a rotation method towards a vector zero (0,0,0)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
 

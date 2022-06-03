@@ -9,14 +9,17 @@ namespace ManExe
     [ExecuteInEditMode]
     public class UniqueID : MonoBehaviour
     {
-        [SerializeField, ReadOnly] private string _id = Guid.NewGuid().ToString();
+        [SerializeField, ReadOnly] private string _id;
         [SerializeField] private static SerializableDictionary<string, GameObject> idDatabase 
             = new SerializableDictionary<string,GameObject>();
         public string ID => _id;
 
-        private void OnValidate()
+        private void Awake()
         {
-            if (!idDatabase.ContainsKey(_id)) idDatabase.Add(_id, this.gameObject);
+            if (idDatabase == null)
+                idDatabase = new SerializableDictionary<string, GameObject>();
+            if (idDatabase.ContainsKey(_id)) Generate();
+            else idDatabase.Add(_id, this.gameObject);
         }
 
         private void OnDestroy()

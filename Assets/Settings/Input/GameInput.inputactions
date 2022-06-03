@@ -78,16 +78,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MouseLeft",
-                    "type": "Button",
-                    "id": "de9517b4-866e-45a2-8f47-b205128907b0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MouseRight",
+                    "name": "Use",
                     "type": "Button",
                     "id": "3dfc814a-a593-4884-a53b-8b395bdad538",
                     "expectedControlType": "Button",
@@ -231,23 +222,12 @@
                 },
                 {
                     "name": "",
-                    "id": "1981c267-1ccf-4e12-9e9e-061df1230880",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a40927ce-fb19-48b9-b37b-f54e09a8d664",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseRight",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -391,6 +371,74 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Unpause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Cheats",
+            "id": "97c7424e-1000-45a4-a09d-e5388e567a9a",
+            "actions": [
+                {
+                    "name": "DebugMenu",
+                    "type": "Button",
+                    "id": "5647a6d4-ea05-45c1-9b70-ecdda9513185",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Console",
+                    "type": "Button",
+                    "id": "b33a6eab-cc07-42a1-b8d3-2c430b4031d0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SaveLoadMenu",
+                    "type": "Button",
+                    "id": "2257847c-8931-4288-900e-19062809eac2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7269fdaf-bc71-48f6-83b0-ca2f8cef164d",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DebugMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a911992-313f-4d3b-9b8e-b4e9de2876c8",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97d47bfd-8bb4-43f8-8970-501be4928429",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaveLoadMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

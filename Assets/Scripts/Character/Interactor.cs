@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ManExe
 {
-
     public class Interactor : MonoBehaviour
     {
         public Transform InteractionPoint;
@@ -20,7 +16,7 @@ namespace ManExe
 
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
-                for(int i = 0; i < colliders.Length; i++)
+                for (int i = 0; i < colliders.Length; i++)
                 {
                     var interactable = colliders[i].GetComponent<IInteractable>();
 

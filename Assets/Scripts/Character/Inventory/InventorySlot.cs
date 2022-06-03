@@ -6,9 +6,10 @@ using UnityEngine;
 namespace ManExe
 {
     [System.Serializable]
-    public class InventorySlot 
+    public class InventorySlot : ISerializationCallbackReceiver
     {
-        [SerializeField] private InventoryItemData _itemData;
+        [NonSerialized] private InventoryItemData _itemData;
+        [SerializeField] private int _itemId = -1; // Might be redundant 
         [SerializeField] private int _stackSize;
     	
 
@@ -18,6 +19,7 @@ namespace ManExe
         public InventorySlot(InventoryItemData source, int amount)
         {
             _itemData = source;
+            _itemId = ItemData.ID;
             _stackSize = amount;
         }
 
@@ -32,6 +34,7 @@ namespace ManExe
             else
             {
                 _itemData = invSlot.ItemData;
+                _itemId = ItemData.ID;
                 _stackSize = 0;
                 AddToStack(invSlot.StackSize);
             }
@@ -40,6 +43,7 @@ namespace ManExe
         public void ClearSlot()
         {
             _itemData = null;
+            _itemId = -1;
             _stackSize = -1;
         }
 
@@ -52,6 +56,7 @@ namespace ManExe
         public void UpdateInventorySlot(InventoryItemData data, int amount)
         {
             _itemData = data;
+            _itemId = ItemData.ID;
             _stackSize = amount;
         }
 
@@ -83,6 +88,18 @@ namespace ManExe
 
             splitStack = new InventorySlot(ItemData, halfStack);
             return true;
+        }
+
+        public void OnBeforeSerialize()
+        {
+            
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (_itemId == -1) return;
+            var db = Resources.Load<Database>("ItemIdDatabase");
+            _itemData = db.GetItem(_itemId);
         }
     }
 }

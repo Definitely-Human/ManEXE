@@ -22,6 +22,8 @@ namespace ManExe
         {
             ClearSlot();
 
+            _itemSprite.preserveAspect = true;
+
             _button = GetComponent<Button>();
             _button?.onClick.AddListener(OnUISlotClick);
 
