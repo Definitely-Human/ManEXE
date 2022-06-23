@@ -7,12 +7,13 @@ namespace ManExe
     public class PlayerStateMachine : MonoBehaviour
     {
         // Reference variables
-        private GameInput _gameInput;
+        private InputReader _inputReader;
         private CharacterController _characterController;
         private Animator _animator;
         private Transform _cameraMainTransform;
         private Transform _cameraAngleReference;
         private World _world;
+        private Camera _camera;
 
         // Variables to store optimized setter/getter parameter IDs
         private int _isWalkingHash;
@@ -75,24 +76,16 @@ namespace ManExe
         public int IsRunningHash { get => _isRunningHash; }
         public int JumpCountHash { get => _jumpCountHash; }
         public int IsFallingHash { get => _isFallingHash; }
-        public bool IsMovementPressed
-        { get { return _isMovementPressed; } }
-        public bool IsRunPressed
-        { get { return _isRunPressed; } }
+        public bool IsMovementPressed { get { return _isMovementPressed; } }
+        public bool IsRunPressed { get { return _isRunPressed; } }
         public bool RequireNewJumpPress { get => _requireNewJumpPress; set => _requireNewJumpPress = value; }
         public bool IsJumping { get => _isJumping; set => _isJumping = value; }
-        public float CurrentMovementY
-        { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
-        public float CurrentMovementX
-        { get { return _currentMovement.x; } set { _currentMovement.x = value; } }
-        public float CurrentMovementZ
-        { get { return _currentMovement.z; } set { _currentMovement.z = value; } }
-        public float AppliedMovementX
-        { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
-        public float AppliedMovementY
-        { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
-        public float AppliedMovementZ
-        { get { return _appliedMovement.z; } set { _appliedMovement.z = value; } }
+        public float CurrentMovementY { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
+        public float CurrentMovementX { get { return _currentMovement.x; } set { _currentMovement.x = value; } }
+        public float CurrentMovementZ { get { return _currentMovement.z; } set { _currentMovement.z = value; } }
+        public float AppliedMovementX { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
+        public float AppliedMovementY { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
+        public float AppliedMovementZ { get { return _appliedMovement.z; } set { _appliedMovement.z = value; } }
         public float Gravity { get => _gravity; }
         public float RunMultiplier { get => _runMultiplier; set => _runMultiplier = value; }
         public float FallSpeedLimit { get => _fallSpeedLimit; }
@@ -103,11 +96,15 @@ namespace ManExe
         private void Awake()
         {
             // Setup reference variables
-            _gameInput = new GameInput();
+            _inputReader = Resources.Load<InputReader>("Input/Default Input Reader");
+            _inputReader.EnablePlayerInput();
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
             _cameraMainTransform = Camera.main.transform;
-            //_world = GameObject.Find("World").GetComponent<World>();
+            _camera = _cameraMainTransform.gameObject.GetComponent<Camera>();
+            var world = GameObject.Find("World");
+            if (world != null)
+                _world = world.GetComponent<World>();
 
             _cameraAngleReference = new GameObject().transform;
             _cameraAngleReference.name = "Camera Angle Reference";
@@ -138,7 +135,7 @@ namespace ManExe
         private void Update()
         {
             HandleRotation();
-            AdjustMovmentFromCameraAngle();
+            AdjustMovementFromCameraAngle();
 
             HandlePlacementAndDestruction();
 
@@ -151,12 +148,11 @@ namespace ManExe
         {
             if (_requrePlaceBlock)
             {
-                Ray ray = _cameraMainTransform.gameObject.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
+                Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, 10, _layerMask))
                 {
-                    Debug.Log("Ray hit " + hit.ToString());
                     _world.GetChunkFromVector3(hit.transform.position).PlaceTerrain(hit.point);
                 }
                 _requrePlaceBlock = false;
@@ -164,7 +160,7 @@ namespace ManExe
 
             if (_requreBreakBlock)
             {
-                Ray ray = _cameraMainTransform.gameObject.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
+                Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, 10, _layerMask))
@@ -177,58 +173,70 @@ namespace ManExe
 
         private void OnEnable()
         {
-            _gameInput.Player.Movement.started += OnMovementInput;
-            _gameInput.Player.Movement.performed += OnMovementInput;
-            _gameInput.Player.Movement.canceled += OnMovementInput;
-            _gameInput.Player.Run.started += OnRun;
-            _gameInput.Player.Run.canceled += OnRun;
-            _gameInput.Player.Jump.started += OnJump;
-            _gameInput.Player.Jump.canceled += OnJump;
-            //_gameInput.Player.MouseLeft.started += OnLeftMouseClick;
-            //_gameInput.Player.MouseRight.started += OnRightMouseClick;
-
-            _gameInput.Player.Enable();
+            _inputReader.MovementEvent += OnMovementInput;
+            _inputReader.RunEvent += OnRun;
+            _inputReader.RunStoppedEvent += OnRunStopped;
+            _inputReader.JumpEvent += OnJumpStarted;
+            _inputReader.JumpCanceledEvent += OnJumpStopped;
+            _inputReader.AttackEvent += OnLeftMouseClick;
+            _inputReader.UseEvent += OnRightMouseClick;
         }
+
+        
 
         private void OnDisable()
         {
-            _gameInput.Player.Movement.started -= OnMovementInput;
-            _gameInput.Player.Movement.performed -= OnMovementInput;
-            _gameInput.Player.Movement.canceled -= OnMovementInput;
-            _gameInput.Player.Run.started -= OnRun;
-            _gameInput.Player.Run.canceled -= OnRun;
-            _gameInput.Player.Jump.started -= OnJump;
-            _gameInput.Player.Jump.canceled -= OnJump;
+            _inputReader.MovementEvent -= OnMovementInput;
+            _inputReader.RunEvent -= OnRun;
+            _inputReader.RunStoppedEvent -= OnRunStopped;
+            _inputReader.JumpEvent -= OnJumpStarted;
+            _inputReader.JumpCanceledEvent -= OnJumpStopped;
+            _inputReader.AttackEvent -= OnLeftMouseClick;
+            _inputReader.UseEvent -= OnRightMouseClick;
 
-            _gameInput.Player.Disable();
         }
 
         //========================
         // Callback functions
-        private void OnRun(InputAction.CallbackContext context)
+        private void OnRun()
         {
-            _isRunPressed = context.ReadValueAsButton();
+            _isRunPressed = true;
         }
-
-        private void OnJump(InputAction.CallbackContext context)
+        
+        private void OnRunStopped()
         {
-            _isJumpPressed = context.ReadValueAsButton();
+            _isRunPressed = false;
+        }
+        
+        private void OnJumpStarted()
+        {
+            OnJump(true);
+        }
+        
+        private void OnJumpStopped()
+        {
+            OnJump(false);
+        }
+        
+        private void OnJump(bool isJumpPressed)
+        {
+            _isJumpPressed = isJumpPressed;
             _requireNewJumpPress = false;
         }
 
-        private void OnLeftMouseClick(InputAction.CallbackContext context)
+        private void OnLeftMouseClick()
         {
             _requreBreakBlock = true;
         }
 
-        private void OnRightMouseClick(InputAction.CallbackContext context)
+        private void OnRightMouseClick()
         {
             _requrePlaceBlock = true;
         }
 
-        private void OnMovementInput(InputAction.CallbackContext context)
+        private void OnMovementInput(Vector2 movementInput)
         {
-            _currentMovementInput = context.ReadValue<Vector2>();
+            _currentMovementInput = movementInput;
             //_currentMovement.x = _currentMovementInput.x;
             //_currentMovement.z = _currentMovementInput.y;
             _isMovementPressed = _currentMovementInput.x != 0 || _currentMovementInput.y != 0;
@@ -256,7 +264,7 @@ namespace ManExe
             _jumpGravities.Add(3, thirdJumpGravity);
         }
 
-        private void AdjustMovmentFromCameraAngle()
+        private void AdjustMovementFromCameraAngle()
         {
             _cameraAngleReference.eulerAngles = new Vector3(0, _cameraMainTransform.eulerAngles.y, 0);
             //Instead of taking the camera's forward Vector, use a reference Transform,

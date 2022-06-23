@@ -9,25 +9,35 @@ namespace ManExe
     {
         public static UnityAction OnPlayerInventoryChanged;
         public static UnityAction<InventorySystem, int> OnPlayerInventoryDisplayRequested;
-
+        private InputReader _inputReader;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            _inputReader = Resources.Load<InputReader>("Input/Default Input Reader");
+        }
+        
         private void Start()
         {
             SaveGameManager.data.playerInventory = new InventorySaveData(PrimaryInventorySystem);
         }
 
-        private void Update()
-        {
-            if (Keyboard.current.bKey.wasPressedThisFrame) OnPlayerInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, hotbarLength);
-        }
 
         private void OnEnable()
         {
             SaveLoadManager.OnLoadGame += LoadInventory;
+            _inputReader.OpenInventoryEvent += OnOpenBackpackInventory;
+        }
+
+        private void OnOpenBackpackInventory()
+        {
+            OnPlayerInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, hotbarLength);
         }
 
         private void OnDisable()
         {
             SaveLoadManager.OnLoadGame -= LoadInventory;
+            _inputReader.OpenInventoryEvent -= OnOpenBackpackInventory;
         }
 
         protected override void LoadInventory(SaveData data)

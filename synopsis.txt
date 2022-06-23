@@ -1,0 +1,41 @@
+Проект на Unity, 3D, с генерацией  частично разрушаемых уровней. 
+Уровни могут быть 2 типов, подземные данжи или наземный чистично открытый мир.
+Жанры: рогалик, рпг. Сеттинг: средневековье, магия. 
+Визуал в стиле полуреализма.
+Сюжет довольно мрачный и отходит на задний план, с фокусом на ворлдбилдинг.
+
+Главный герой бессмертный, который хочет отомстить своим врагам,
+которые напали на него  чтобы забрать себе его силы и убили его семью. 
+Он возрождается в тела случайных людей которые только умерли или близки к смерти
+в случайных точках континента после того как его тело в котором он находился было уничтожено. 
+Цель главного героя это убить своих врагов, и вернуть себе свои силы.
+
+Каждый раз у него есть определённое количество попыток умереть и возродится, 
+потом время вернётся вспять и он потеряет все почти все силы и сохранит только воспоминания.
+
+Главный герой не безмолвный персонаж, и будет реагировать на события в игре
+и на его реакции будет влиять всё что случилось ранее. 
+Действия и выборы игрока имеют значения. 
+Знания полученые в прошлых жизнях открывают новый возможности и реацкии от главного героя.
+
+Когда он убивает своих врагов он может вернуть часть своей оригинальной силы, 
+которую он не потеряет даже когда время вернётся вспять.
+
+Description of main game loop.
+
+In game you have ability to explore levels of 2 types. First type is large open level in boundaries of which player can freely move in all directions. Second type is an underground dungeon with intertwined corridors and rooms.
+
+Levels can change during the game (for example some assets can be destroyed).
+
+Player can walk, run, jump, climb slopes, attack, use active skills, use potions, craft or interact with items.
+
+Player can meet enemies during his exploration of level and then he will have to fight. Player can have multiple types of weapons, armor, or other equipment that can help him defeat his foes. Other than that player has active and passive skills that he can use to improve his advantage.
+
+Enemies can be of many types such as humanoids (humans, undead), quadrupeds (wolves, bears), arachnids (giant spiders).
+
+Player and enemies can also interact with the surroundings to their advantage.
+Player can take items from defeated enemies for later use.
+
+There are multiple ways to finish the level depending on objectives. If level is finished successfully then player will be taken to map menu where his next destination can be decided. Map screen will reveal to the player the part of procedurally generated map that he is aware of. Depending on the methods used to finish the level options for next one can change.
+
+If player had died during the level he will lose one of his lives and his items.  Then new level will be generated. If amount of lives reaches 0 then player will lose most of his progress and world will be generated anew.

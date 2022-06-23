@@ -29,7 +29,7 @@ namespace ManExe
 
         public override void AssignSlot(InventorySystem invToDisplay, int offset)
         {
-            ClearSlots();/// Maybe redundant 
+            ClearSlots();// Maybe redundant 
 
             slotDictionary = new Dictionary<InventorySlot_UI, InventorySlot>();
 

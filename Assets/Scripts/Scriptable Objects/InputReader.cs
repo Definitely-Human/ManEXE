@@ -70,9 +70,11 @@ namespace ManExe
             }
             _gameInput.Cheats.Enable(); // Temporary solution
             _gameInput.Player.Enable();
-            _gameInput.Menu.Enable();
+            
         }
 
+
+        
         private void OnDisable()
         {
             DisableAllInput();
@@ -83,19 +85,21 @@ namespace ManExe
         //=============================
 
         // Switch action maps
-        private void EnablePlayerInput()
+        public void EnablePlayerInput()
         {
+            _gameInput.Cheats.Enable();
             _gameInput.Player.Enable();
             _gameInput.Menu.Disable();
         }
 
-        private void EnableMenuInput()
+        public void EnableMenuInput()
         {
+            _gameInput.Cheats.Enable();
             _gameInput.Player.Disable();
             _gameInput.Menu.Enable();
         }
 
-        private void DisableAllInput()
+        public void DisableAllInput()
         {
             _gameInput.Cheats.Disable();
             _gameInput.Player.Disable();
@@ -122,7 +126,8 @@ namespace ManExe
 
         public void OnUse(InputAction.CallbackContext context)
         {
-            UseEvent?.Invoke();
+            if (context.phase == InputActionPhase.Performed)
+                UseEvent?.Invoke();
         }
 
         public void OnCamera(InputAction.CallbackContext context)

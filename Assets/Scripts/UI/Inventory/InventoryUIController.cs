@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,47 +6,87 @@ namespace ManExe
 {
     public class InventoryUIController : MonoBehaviour
     {
-        public DynamicInventoryDisplay invetoryPanel;
-        public DynamicInventoryDisplay playerBackpacPanel;
+        public DynamicInventoryDisplay externalInventoryPanel;
+        public DynamicInventoryDisplay playerBackpackPanel;
+        private InputReader _inputReader;
+        [SerializeField] private CursorManager _cursorManager;
+
+        public bool IsInventoryOpened
+        {
+            get => externalInventoryPanel.gameObject.activeInHierarchy ||
+                   playerBackpackPanel.gameObject.activeInHierarchy;
+        }
 
         private void Awake()
         {
-            invetoryPanel.gameObject.SetActive(false);
-            playerBackpacPanel.gameObject.SetActive(false);
+            _inputReader = Resources.Load<InputReader>("Input/Default Input Reader");
+            _cursorManager.LockCursor();
         }
-        void Update()
-        {
 
-            if (invetoryPanel.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                invetoryPanel.gameObject.SetActive(false);
-            }
-            if (playerBackpacPanel.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                playerBackpacPanel.gameObject.SetActive(false);
-            }
+        private void Start()
+        {
+            externalInventoryPanel.gameObject.SetActive(false);
+            playerBackpackPanel.gameObject.SetActive(false);
         }
+
         private void OnEnable()
         {
-            InventoryHolder.OnDynamicInventoryDisplayRequested += DisplayInvetory;
+            InventoryHolder.OnDynamicInventoryDisplayRequested += DisplayExternalInventory;
             PlayerInventroryHolder.OnPlayerInventoryDisplayRequested += DisplayPlayerInventory;
+            _inputReader.PauseEvent += CloseExternalInventory;
+            _inputReader.PauseEvent += CloseBackpackInventory;
         }
+
+        
 
         private void OnDisable()
         {
-            InventoryHolder.OnDynamicInventoryDisplayRequested -= DisplayInvetory;
+            InventoryHolder.OnDynamicInventoryDisplayRequested -= DisplayExternalInventory;
             PlayerInventroryHolder.OnPlayerInventoryDisplayRequested -= DisplayPlayerInventory;
+            _inputReader.PauseEvent -= CloseExternalInventory;
+            _inputReader.PauseEvent -= CloseBackpackInventory;
+        }
+        
+        private void CloseBackpackInventory()
+        {
+            if (playerBackpackPanel.gameObject.activeInHierarchy)
+            {
+                playerBackpackPanel.gameObject.SetActive(false);
+                if (!IsInventoryOpened) // If both inventories are closed lock cursor
+                {
+                    _cursorManager.LockCursor();
+                }
+            }
+
+            
         }
 
-        private void DisplayInvetory(InventorySystem invToDisplay, int offset)
+        private void CloseExternalInventory()
         {
-            invetoryPanel.gameObject.SetActive(true);
-            invetoryPanel.RefreshDynamicInventory(invToDisplay, offset);
+            if (externalInventoryPanel.gameObject.activeInHierarchy)
+            {
+                externalInventoryPanel.gameObject.SetActive(false);
+                if (!IsInventoryOpened)
+                {
+                    _cursorManager.LockCursor();
+                }
+            }
+            
+            
+        }
+
+        private void DisplayExternalInventory(InventorySystem invToDisplay, int offset)
+        {
+            externalInventoryPanel.gameObject.SetActive(true);
+            externalInventoryPanel.RefreshDynamicInventory(invToDisplay, offset);
+            _cursorManager.UnlockCursor();
+            
         }
         private void DisplayPlayerInventory(InventorySystem invToDisplay, int offset)
         {
-            playerBackpacPanel.gameObject.SetActive(true);
-            playerBackpacPanel.RefreshDynamicInventory(invToDisplay, offset);
+            playerBackpackPanel.gameObject.SetActive(true);
+            playerBackpackPanel.RefreshDynamicInventory(invToDisplay, offset);
+            _cursorManager.UnlockCursor();
         }
 
     }
