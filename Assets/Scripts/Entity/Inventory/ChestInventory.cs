@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Entity.Interactable;
+using ManExe.Interfaces;
+using ManExe.SaveLoadSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
 
     [RequireComponent(typeof(UniqueID))]

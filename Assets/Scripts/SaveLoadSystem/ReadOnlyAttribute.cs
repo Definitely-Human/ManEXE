@@ -1,9 +1,10 @@
 using UnityEngine;
+
 /// <summary>
 /// Read Only attribute.
 /// Attribute to use only to mark ReadOnly properties.
 /// </summary>
-namespace ManExe
+namespace ManExe.SaveLoadSystem
 {
 
     public class ReadOnlyAttribute : PropertyAttribute

@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Linq;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     [System.Serializable]
     public class InventorySystem 

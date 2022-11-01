@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.Entity.StateMachine
 {
     public class PlayerStateMachine : MonoBehaviour
     {
@@ -12,7 +12,7 @@ namespace ManExe
         private Animator _animator;
         private Transform _cameraMainTransform;
         private Transform _cameraAngleReference;
-        private World _world;
+        private World.World _world;
         private Camera _camera;
 
         // Variables to store optimized setter/getter parameter IDs
@@ -104,7 +104,7 @@ namespace ManExe
             _camera = _cameraMainTransform.gameObject.GetComponent<Camera>();
             var world = GameObject.Find("World");
             if (world != null)
-                _world = world.GetComponent<World>();
+                _world = world.GetComponent<World.World>();
 
             _cameraAngleReference = new GameObject().transform;
             _cameraAngleReference.name = "Camera Angle Reference";

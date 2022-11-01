@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "New InputReader", menuName = "Scriptable/InputReader", order = 0)]
     public class InputReader : ScriptableObject, GameInput.ICheatsActions, GameInput.IPlayerActions, GameInput.IMenuActions

@@ -1,6 +1,8 @@
+using ManExe.Entity.ItemScripts;
+using ManExe.Interfaces;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     [RequireComponent(typeof(InventoryHolder))]
     public class Collector : MonoBehaviour

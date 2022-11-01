@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Interfaces
 {
 
 	public interface IRayProvider

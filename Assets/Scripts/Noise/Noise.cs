@@ -1,7 +1,8 @@
+using ManExe.Core;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
-using System.Collections;
 
-namespace ManExe
+namespace ManExe.Noise
 {
     public static class Noise
     {

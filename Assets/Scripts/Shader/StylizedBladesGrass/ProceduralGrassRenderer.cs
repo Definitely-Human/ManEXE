@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-
-namespace ManExe
+namespace ManExe.Shader.StylizedBladesGrass
 {
     [ExecuteInEditMode]
     public class ProceduralGrassRenderer : MonoBehaviour

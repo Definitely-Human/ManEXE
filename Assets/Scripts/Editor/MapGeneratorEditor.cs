@@ -1,11 +1,11 @@
-using UnityEngine;
-using System.Collections;
+using ManExe.Noise;
 using UnityEditor;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Editor
 {
 	[CustomEditor(typeof(MapDisplay))]
-	public class MapGeneratorEditor : Editor
+	public class MapGeneratorEditor : UnityEditor.Editor
 	{
 
 		public override void OnInspectorGUI()

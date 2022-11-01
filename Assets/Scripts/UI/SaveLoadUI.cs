@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.UI
 {
     public class SaveLoadUI : MonoBehaviour
     {

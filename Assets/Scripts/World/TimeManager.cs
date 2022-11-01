@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.World
 {
 
     public class TimeManager: MonoBehaviour

@@ -1,5 +1,5 @@
 
-namespace ManExe
+namespace ManExe.Entity.StateMachine
 {
 
     public abstract class PlayerBaseState 

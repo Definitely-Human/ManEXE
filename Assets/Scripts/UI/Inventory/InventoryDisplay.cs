@@ -1,9 +1,9 @@
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using ManExe.Entity.Inventory;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.UI.Inventory
 {
     public abstract class InventoryDisplay : MonoBehaviour
     {

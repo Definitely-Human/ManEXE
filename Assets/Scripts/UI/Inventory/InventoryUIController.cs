@@ -1,8 +1,8 @@
-using System;
+using ManExe.Entity.Inventory;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.UI.Inventory
 {
     public class InventoryUIController : MonoBehaviour
     {

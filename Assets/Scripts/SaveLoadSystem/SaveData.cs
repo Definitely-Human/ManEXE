@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using ManExe.Entity.Inventory;
+using ManExe.Entity.ItemScripts;
 
-namespace ManExe
+namespace ManExe.SaveLoadSystem
 {
     [System.Serializable]
     public class SaveData 

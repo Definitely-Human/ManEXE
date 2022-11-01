@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using ManExe.World;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Data
 {
     [System.Serializable]
     public class WorldData 

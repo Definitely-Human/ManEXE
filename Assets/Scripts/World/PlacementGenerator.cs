@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using ManExe.Data;
 using UnityEditor;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.World
 {
     public class PlacementGenerator : MonoBehaviour
     {

@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "New Database", menuName = "Scriptable/Database", order = 0)]
     public class Database : ScriptableObject

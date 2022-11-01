@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.SaveLoadSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     [System.Serializable]
     public abstract class InventoryHolder : MonoBehaviour

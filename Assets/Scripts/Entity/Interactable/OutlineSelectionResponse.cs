@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Interfaces;
+using ManExe.Packages.QuickOutline.Scripts;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Entity.Interactable
 {
     public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
     {

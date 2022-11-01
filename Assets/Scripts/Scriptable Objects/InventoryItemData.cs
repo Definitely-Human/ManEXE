@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-
-namespace ManExe
+namespace ManExe.Scriptable_Objects
 {
     /// <summary>
     /// This is a scriptable object, that defines what an item is.

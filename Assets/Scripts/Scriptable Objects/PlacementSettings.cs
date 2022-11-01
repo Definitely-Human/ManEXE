@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "New PlacementSettings", menuName = "Scriptable/PlacementSettings", order = 0)]
     public class PlacementSettings : ScriptableObject

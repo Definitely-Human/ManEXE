@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using ManExe.Entity.Interactable;
 using UnityEngine.Events;
 
-namespace ManExe
+namespace ManExe.Interfaces
 {
 
     public interface IInteractable 

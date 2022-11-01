@@ -1,6 +1,9 @@
+using ManExe.Interfaces;
+using ManExe.SaveLoadSystem;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Entity.ItemScripts
 {
     [RequireComponent(typeof(SphereCollider))]
     [RequireComponent(typeof(UniqueID))]

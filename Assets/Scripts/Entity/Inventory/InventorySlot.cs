@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     [System.Serializable]
     public class InventorySlot : ISerializationCallbackReceiver

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Shader.StylizedBladesGrass
 {
     public class GrassGenerator : MonoBehaviour
     {

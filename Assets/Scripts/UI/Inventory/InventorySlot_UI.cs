@@ -1,9 +1,9 @@
+using ManExe.Entity.Inventory;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
-namespace ManExe
+namespace ManExe.UI.Inventory
 {
     public class InventorySlot_UI : MonoBehaviour
     {

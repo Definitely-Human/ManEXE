@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Core;
+using ManExe.Shader.StylizedBladesGrass;
 using UnityEngine;
 
-
-namespace ManExe
+namespace ManExe.World
 {
     public class WorldGenerator : MonoBehaviour
     {
@@ -42,7 +41,7 @@ namespace ManExe
 
             loadingScreen.SetActive(true);
 
-            heightMap = Noise.GenerateNoiseMap(world.Settings);
+            heightMap = Noise.Noise.GenerateNoiseMap(world.Settings);
 
             for(int x = 0; x < world.Settings.WorldSizeInChunksX; x++)
             {

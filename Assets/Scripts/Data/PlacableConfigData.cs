@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Data
 {
 
     [System.Serializable]

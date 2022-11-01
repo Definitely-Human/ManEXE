@@ -1,4 +1,6 @@
-namespace ManExe
+using ManExe.Scriptable_Objects;
+
+namespace ManExe.Interfaces
 {
     public interface ICollectable
     {

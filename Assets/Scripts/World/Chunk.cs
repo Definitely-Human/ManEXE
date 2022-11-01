@@ -1,8 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
+using ManExe.Core;
+using ManExe.Data;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.World
 {
     public class Chunk
     {

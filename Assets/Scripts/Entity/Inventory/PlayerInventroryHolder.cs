@@ -1,8 +1,9 @@
+using ManExe.SaveLoadSystem;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     [RequireComponent(typeof(UniqueID))]
     public class PlayerInventroryHolder : InventoryHolder

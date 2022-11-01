@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using ManExe.Entity.Inventory;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.UI.Inventory
 {
     public class StaticInventoryDisplay : InventoryDisplay
     {

@@ -1,13 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
-using UnityEngine.InputSystem;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-namespace ManExe
+namespace ManExe.Entity.Inventory
 {
     public class MouseItemData : MonoBehaviour
     {

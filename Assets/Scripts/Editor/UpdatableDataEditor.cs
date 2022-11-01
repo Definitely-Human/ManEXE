@@ -1,11 +1,11 @@
-using UnityEngine;
-using System.Collections;
+using ManExe.Scriptable_Objects;
 using UnityEditor;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Editor
 {
 	[CustomEditor(typeof(UpdatableData), true)]
-	public class UpdatableDataEditor : Editor
+	public class UpdatableDataEditor : UnityEditor.Editor
 	{
 
 		public override void OnInspectorGUI()

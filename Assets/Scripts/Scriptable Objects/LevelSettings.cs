@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Data;
+using ManExe.Noise;
 using UnityEngine;
-using UnityEditor;
 
-namespace ManExe
+namespace ManExe.Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "New LevelSettings", menuName = "Scriptable/LevelSettings", order = 0)]
     public class LevelSettings : UpdatableData

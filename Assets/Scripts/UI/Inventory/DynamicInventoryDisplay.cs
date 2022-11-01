@@ -1,10 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ManExe.Entity.Inventory;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.UI.Inventory
 {
     public class DynamicInventoryDisplay : InventoryDisplay
     {

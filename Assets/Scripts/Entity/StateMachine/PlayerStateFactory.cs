@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-namespace ManExe
+
+namespace ManExe.Entity.StateMachine
 {
     enum PlayerStates
     {

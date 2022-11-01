@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Core;
+using ManExe.Data;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
-using TMPro;
 
-namespace ManExe
+namespace ManExe.World
 {
     public class World : MonoBehaviour
     {

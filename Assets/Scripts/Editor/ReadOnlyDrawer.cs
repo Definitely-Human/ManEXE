@@ -1,8 +1,8 @@
-using UnityEngine;
+using ManExe.SaveLoadSystem;
 using UnityEditor;
+using UnityEngine;
 
-
-namespace ManExe
+namespace ManExe.Editor
 {
     /// <summary>
     /// This class contains custom drawer for ReadOnly attribute

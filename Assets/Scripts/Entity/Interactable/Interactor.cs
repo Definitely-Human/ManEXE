@@ -1,8 +1,8 @@
-using System;
+using ManExe.Interfaces;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace ManExe
+namespace ManExe.Entity.Interactable
 {
     public class Interactor : MonoBehaviour
     {

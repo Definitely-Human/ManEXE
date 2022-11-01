@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.SaveLoadSystem
 {
     [System.Serializable]
     [ExecuteInEditMode]

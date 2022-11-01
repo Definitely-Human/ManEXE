@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using ManExe.World;
 using UnityEditor;
+using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Editor
 {
     [CustomEditor(typeof(PlacementGenerator))]
-    public class PlacementGeneratorEditor : Editor
+    public class PlacementGeneratorEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using ManExe.Core;
+using ManExe.Scriptable_Objects;
 using UnityEngine;
 
-namespace ManExe
+namespace ManExe.Noise
 {
     public class MapDisplay : MonoBehaviour
     {
