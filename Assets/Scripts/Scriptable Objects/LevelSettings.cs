@@ -32,6 +32,7 @@ namespace ManExe.Scriptable_Objects
 
             base.OnValidate();
         }
-    }
+    
 #endif
+    }
 }

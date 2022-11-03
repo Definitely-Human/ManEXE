@@ -48,7 +48,7 @@ namespace ManExe.Scriptable_Objects
         //Cheats
         public event UnityAction DebugMenuEvent = delegate { };
 
-        public event UnityAction ConsoleEvent = delegate { };
+        public event UnityAction ConsoleVisibilityEvent = delegate { };
 
         public event UnityAction SaveLoadMenuEvent = delegate { };
 
@@ -190,7 +190,8 @@ namespace ManExe.Scriptable_Objects
 
         public void OnConfirm(InputAction.CallbackContext context)
         {
-            ConfirmEvent?.Invoke();
+            if (context.phase == InputActionPhase.Performed)
+                ConfirmEvent?.Invoke();
         }
 
         public void OnMoveSelection(InputAction.CallbackContext context)
@@ -207,7 +208,7 @@ namespace ManExe.Scriptable_Objects
 
         public void OnConsole(InputAction.CallbackContext context)
         {
-            ConsoleEvent?.Invoke();
+            ConsoleVisibilityEvent?.Invoke();
         }
 
         public void OnDebugMenu(InputAction.CallbackContext context)
