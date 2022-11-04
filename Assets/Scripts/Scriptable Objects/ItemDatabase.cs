@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace ManExe.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "New Database", menuName = "Scriptable/Database", order = 0)]
-    public class Database : ScriptableObject
+    [CreateAssetMenu(fileName = "New ItemDatabase", menuName = "Scriptable/ItemDatabase", order = 0)]
+    public class ItemDatabase : ScriptableObject
     {
         [SerializeField] private List<InventoryItemData> _itemDatabase;
         
         [ContextMenu("Set ID")]
-        public void SetItemIDs()
+        public void SetItemIDs() // This method can be executed by right clicking item name in the inspector and selecting 'Set ID'
         {
             _itemDatabase = new List<InventoryItemData>();
 
@@ -24,8 +24,7 @@ namespace ManExe.Scriptable_Objects
             int index = 0;
             for (int i = 0;i < foundItems.Count; i++)
             {
-                InventoryItemData itemToAdd;
-                itemToAdd = hasIdInRange.Find(d => d.ID == i);
+                var itemToAdd = hasIdInRange.Find(d => d.ID == i);
 
                 if(itemToAdd != null)
                 {

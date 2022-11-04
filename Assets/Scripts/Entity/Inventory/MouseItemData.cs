@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,10 +21,14 @@ namespace ManExe.Entity.Inventory
             ItemSprite.color = Color.clear;
             ItemSprite.preserveAspect = true;
             ItemCount.text = "";
+        }
+
+        private void Start()
+        {
             _playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
             if (_playerTransform == null) Debug.Log("MouseItemData.Awake: Player not found");
         }
-        
+
         public void UpdateMouseSlot(InventorySlot invSlot)
         {
             AssignedInventorySlot.AssignItem(invSlot);

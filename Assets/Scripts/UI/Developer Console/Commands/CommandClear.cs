@@ -23,7 +23,7 @@ namespace ManExe.UI.Developer_Console.Commands
         }
         public override void RunCommand(string[] args)
         {
-            DeveloperConsole.Instance.ClearConsole();
+            DevCon.ClearConsole();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace ManExe.Scriptable_Objects
     public class PlacementSettings : ScriptableObject
     {
         [SerializeField] private string _name;
+        [SerializeField] private int _id;
         [SerializeField] private GameObject _prefab;
 
 
@@ -15,6 +16,7 @@ namespace ManExe.Scriptable_Objects
         [SerializeField] Vector3 _minScale;
         [SerializeField] Vector3 _maxScale;
 
+        public int ID { get => _id; set => _id = value; }
         public string Name { get => _name; set => _name = value; }
         public GameObject Prefab { get => _prefab; set => _prefab = value; }
         public float RotateTwardsNormal { get => rotateTwardsNormal; set => rotateTwardsNormal = value; }

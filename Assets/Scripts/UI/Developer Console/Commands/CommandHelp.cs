@@ -6,7 +6,6 @@ namespace ManExe.UI.Developer_Console.Commands
 
     public class CommandHelp : ConsoleCommand
     {
-        private static readonly DeveloperConsole _developerConsole = DeveloperConsole.Instance;
 
 
         public override string Name { get; protected set; }
@@ -25,18 +24,18 @@ namespace ManExe.UI.Developer_Console.Commands
         public override void RunCommand(string[] args)
         {
             
-            _developerConsole.AddMessageToConsole("" +
-                                                  "Type name of the command and arguments to execute it." +
-                                                  "");
+            DevCon.AddMessageToConsole("" +
+                                        "Type name of the command and arguments to execute it." +
+                                        "");
         }
         
         public static void HelpCommand(ConsoleCommand command)
         {
-            _developerConsole.AddMessageToConsole("==================================");
-            _developerConsole.AddMessageToConsole(command.Description);
-            _developerConsole.AddMessageToConsole("----------------------------------");
-            _developerConsole.AddMessageToConsole(command.Help);
-            _developerConsole.AddMessageToConsole("==================================");
+            DevCon.AddMessageToConsole("==================================");
+            DevCon.AddMessageToConsole(command.Description);
+            DevCon.AddMessageToConsole("----------------------------------");
+            DevCon.AddMessageToConsole(command.Help);
+            DevCon.AddMessageToConsole("==================================");
         }
     }
 }

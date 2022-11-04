@@ -6,7 +6,7 @@ namespace ManExe.UI.Inventory
 {
     public class StaticInventoryDisplay : InventoryDisplay
     {
-        [SerializeField] private InventoryHolder _inventoryHolder;
+        [SerializeField] public InventoryHolder _inventoryHolder;
         [SerializeField] private InventorySlot_UI[] slots;
 
         private void OnEnable()
@@ -34,7 +34,7 @@ namespace ManExe.UI.Inventory
         protected override void Start()
         {
             base.Start();
-
+            _inventoryHolder = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventroryHolder>();
             RefreshStaticDisplay();
         }
         public override void AssignSlot(InventorySystem invToDisplay, int offset)

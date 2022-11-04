@@ -97,7 +97,7 @@ namespace ManExe.Entity.Inventory
         public void OnAfterDeserialize()
         {
             if (_itemId == -1) return;
-            var db = Resources.Load<Database>("ItemIdDatabase");
+            var db = Resources.Load<ItemDatabase>("ItemIdDatabase");
             _itemData = db.GetItem(_itemId);
         }
     }

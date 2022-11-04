@@ -1,5 +1,7 @@
 using ManExe.Core;
+using ManExe.Entity.Inventory;
 using ManExe.Shader.StylizedBladesGrass;
+using ManExe.UI.Inventory;
 using UnityEngine;
 
 namespace ManExe.World
@@ -17,13 +19,16 @@ namespace ManExe.World
         private GrassGenerator _grassGenerator;
 
         private float[,] heightMap;
+        private GameObject _player;
 
         private void Awake()
         {
-
+            CreatePlayer();
             _placementGenerator = GetComponent<PlacementGenerator>();
             _grassGenerator = GetComponent<GrassGenerator>();
         }
+
+        
 
         private void Start()
         {
@@ -59,12 +64,15 @@ namespace ManExe.World
             world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2, 
                 heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 10, 
                 GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2);
-            Instantiate(playerPrefab, world.SpawnPosition, Quaternion.identity);
-
+            _player.GetComponent<CharacterController>().Move( new Vector3(world.SpawnPosition.x,world.SpawnPosition.y,world.SpawnPosition.z));
             loadingScreen.SetActive(false);
         }
 
-        
+        private void CreatePlayer()
+        {
+            _player = Instantiate(playerPrefab);
+            _player.tag = "Player";
+        }
 
     }
 

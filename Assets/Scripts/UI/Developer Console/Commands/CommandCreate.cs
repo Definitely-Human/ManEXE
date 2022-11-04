@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using ManExe.Scriptable_Objects;
 
 
 namespace ManExe.UI.Developer_Console.Commands
@@ -8,12 +9,21 @@ namespace ManExe.UI.Developer_Console.Commands
 
     public class CommandCreate : ConsoleCommand
     {
-    	
+        struct CreateArgs
+        {
+            public int ID;
+            public int Amount;
+            public Vector3 Pos;
+            public bool yRay;
 
+        }
+        
         public override string Name { get; protected set; }
         public override string Command { get; protected set; }
         public override string Description { get; protected set; }
         public override string Help { get; protected set; }
+
+        private PlacementDatabase _placementDatabase;
         
         public CommandCreate()
         {
@@ -29,55 +39,82 @@ namespace ManExe.UI.Developer_Console.Commands
             
             
         }
-        public override void RunCommand(string[] args)
-        {
-            // Default values for arguments.
-            int amt = 1;
-            int id = 1; // If ID not provided throw error.
-            int x = 0, y = 0, z = 0;
-            
-            
-            for (int i = 0; i < args.Length; i++)
-            {
-                string argument = args[i];
-                string[] argSplit = Regex.Split(argument, @"\="); // Split every argument in two parts at '=' sign.
 
-                switch (argSplit[0])
+        private CreateArgs FillArgs(string[] argSplit, CreateArgs args)
+        {
+            switch (argSplit[0])
+            {
+                case "-x":
+                    args.Pos.x = int.Parse(argSplit[1]);
+                    break;
+                case "-y":
+                    if (argSplit[1] == "*")
+                    {
+                        args.yRay = true;
+                        break;
+                    }
+                    args.Pos.y = int.Parse(argSplit[1]);
+                    break;
+                case "-z":
+                    args.Pos.z = int.Parse(argSplit[1]);
+                    break;
+                case "-amt":
+                    args.Amount = int.Parse(argSplit[1]);
+                    break;
+                case "-id":
+                    args.ID = int.Parse(argSplit[1]);
+                    break;
+                default:
                 {
-                    case "-x":
-                        x = int.Parse(argSplit[1]);
-                        break;
-                    case "-y":
-                        y = int.Parse(argSplit[1]);
-                        break;
-                    case "-z":
-                        z = int.Parse(argSplit[1]);
-                        break;
-                    case "-amt":
-                        amt = int.Parse(argSplit[1]);
-                        break;
-                    case "-id":
-                        id = int.Parse(argSplit[1]);
-                        break;
-                    default:
-                        Debug.LogWarning("Unknown argument - '" + argSplit[0] + "', it was ignored.");
-                        break; 
+                    Debug.LogWarning(String.Format(DeveloperConsole.ArgumentIgnored,argSplit[0]));
+                    break;
                 }
             }
 
-            if (id < 0)
+            return args;
+        }
+        
+        public override void RunCommand(string[] argsArr)
+        {
+            // Default values for arguments.
+            CreateArgs args = new CreateArgs();
+            args.Amount = 1;
+            args =  ParseArgs(FillArgs, argsArr, args);
+            
+
+            if (args.ID < 0)
             {
                 Debug.LogWarning("Identificator is negative or not provided.");
                 return;
             }
-            if (amt <= 0)
+            if (args.Amount <= 0)
             {
                 Debug.LogWarning("Amount is negative or zero.");
                 return;
             }
 
-            GameObject prefab = (GameObject)Resources.Load("Environment/Pref_LP_Bush001");
-            GameObject cube = MonoBehaviour.Instantiate(prefab, new Vector3(x, y, z), new Quaternion());
+            if (args.yRay == true)
+            {
+                if (!Physics.Raycast(new Vector3(args.Pos.x, short.MaxValue, args.Pos.z), Vector3.down,
+                        out RaycastHit hit, Mathf.Infinity))
+                {
+                    Debug.Log($"Can't detect ground at location x={args.Pos.x} z={args.Pos.z}");
+                    return;
+                }
+
+                args.Pos.y = hit.point.y;
+            }
+            if(_placementDatabase== null)
+                _placementDatabase = (PlacementDatabase)Resources.Load("PlacementDatabase");
+            PlacementSettings placementSettings = _placementDatabase.GetItem(args.ID);
+            
+
+            GameObject createdObj = MonoBehaviour.Instantiate(placementSettings.Prefab, new Vector3(args.Pos.x, args.Pos.y, args.Pos.z), new Quaternion());
+            
+            
+            DevCon.AddMessageToConsole(DeveloperConsole.ExecutedSuccessfully);
         }
+
+        
     }
 }

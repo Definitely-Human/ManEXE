@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 574be693a8412f4499a6cf26d3ff8f21, type: 3}
-  m_Name: YellowTriangularTree
+  m_Name: Bush001
   m_EditorClassIdentifier: 
-  _name: Big Green Tree
-  _prefab: {fileID: 3899312326806784372, guid: f5f6e019c3ad0794dba2a9d5e35bf03b, type: 3}
-  _density: 10
-  _minHeight: 80
-  _maxHeight: 120
+  _name: Bush 001
+  _id: 2
+  _prefab: {fileID: 2630915816047446703, guid: 6c9e8df6963502543b6e7ffd9277eb93, type: 3}
   rotateTwardsNormal: 0.102
   _rotationRange: {x: 0, y: 360}
   _minScale: {x: 0.9, y: 0.9, z: 0.9}
-  _maxScale: {x: 1.1, y: 1.1, z: 1.1}
+  _maxScale: {x: 1.5, y: 1.5, z: 1.5}

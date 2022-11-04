@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 574be693a8412f4499a6cf26d3ff8f21, type: 3}
-  m_Name: BigRock001
+  m_Name: MedRock002
   m_EditorClassIdentifier: 
   _name: Big Rock
-  _prefab: {fileID: 712198190388180846, guid: bc83e04b5bf88df45a60bf4270c093cf, type: 3}
+  _id: 3
+  _prefab: {fileID: 2440207821071993591, guid: 0a022cf7fcb9cfc449b04505cd189cff, type: 3}
   rotateTwardsNormal: 0.102
   _rotationRange: {x: 0, y: 360}
   _minScale: {x: 0.8, y: 0.8, z: 0.8}

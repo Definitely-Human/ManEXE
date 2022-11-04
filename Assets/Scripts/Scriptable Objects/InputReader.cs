@@ -37,7 +37,7 @@ namespace ManExe.Scriptable_Objects
         public event UnityAction<Vector2> MovementEvent = delegate { };
 
         // Menu
-        public event UnityAction MoveSelectionEvent = delegate { };
+        public event UnityAction<Vector2> MoveSelectionEvent = delegate { };
 
         public event UnityAction ConfirmEvent = delegate { };
 
@@ -196,7 +196,8 @@ namespace ManExe.Scriptable_Objects
 
         public void OnMoveSelection(InputAction.CallbackContext context)
         {
-            MoveSelectionEvent?.Invoke();
+            if (context.phase == InputActionPhase.Performed)
+                MoveSelectionEvent?.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnUnpause(InputAction.CallbackContext context)
