@@ -64,18 +64,61 @@ namespace ManExe.World
         public void PlaceTerrain(Vector3 pos)
         {
 
-            Vector3Int v3Int = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), Mathf.CeilToInt(pos.z));
-            v3Int -= Position;
+            Vector3Int v3Int = GetVoxelMapIdFromVector3Ceil(pos);
             chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z].DistToSurface = 0f;
             CreateMeshData();
 
         }
 
+        public void DrawTerrain(Vector3 pos, Vector3 size)
+        {
+            Vector3Int vMapPos = GetVoxelMapIdFromVector3Ceil(pos);
+            for (int i = 0; i < size.x; i++)
+            {
+                for (int j = 0; j < size.y; j++)
+                {
+                    for (int k = 0; k < size.z; k++)
+                    {
+                        Vector3Int posCorrected = new Vector3Int(vMapPos.x + i,vMapPos.y + j,vMapPos.z + k);
+                        if (IsVoxelInChunk(posCorrected+ Position))
+                        {
+                            Debug.Log("Drawing at: " + posCorrected+Position);
+                            chunkData.VoxelMap[posCorrected.x, posCorrected.y, posCorrected.z].DistToSurface = 0f;
+                        }
+                    }
+                }
+            }
+            CreateMeshData();
+        }
+
+        private Vector3Int GetVoxelMapIdFromVector3Ceil(Vector3 pos)
+        {
+            Vector3Int v3Int = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), Mathf.CeilToInt(pos.z));
+            return v3Int - Position;
+        }
+        
+        private Vector3Int GetVoxelMapIdFromVector3Floor(Vector3 pos)
+        {
+            Vector3Int v3Int = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+            return v3Int - Position;
+        }
+
+        public bool IsVoxelInChunk(Vector3 pos)
+        {
+            if (pos.x >= Position.x && pos.y >= Position.y && pos.z >= Position.z
+                && pos.x < Position.x + GameData.ChunkWidth 
+                && pos.y < Position.y + GameData.ChunkHeight
+                && pos.z < Position.z + GameData.ChunkWidth)
+            {
+                return true;
+            }
+            return false;
+        }
+        
         public void RemoveTerrain(Vector3 pos)
         {
 
-            Vector3Int v3Int = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
-            v3Int -= Position;
+            Vector3Int v3Int = GetVoxelMapIdFromVector3Floor(pos);
             chunkData.VoxelMap[v3Int.x, v3Int.y, v3Int.z].DistToSurface = 1f;
             CreateMeshData();
 

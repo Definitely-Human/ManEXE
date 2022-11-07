@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 namespace ManExe.World
@@ -8,7 +7,6 @@ namespace ManExe.World
     {
         // === References ===
         [SerializeField] private Transform sun;
-        [SerializeField] private TextMeshProUGUI clock;
 
         // === Data ===
         [SerializeField] 
@@ -20,22 +18,17 @@ namespace ManExe.World
         private int dayEndTime = 1320; // 22:00
 
         [SerializeField]
-        private int Day = 1;
+        private int day = 1;
 
         [Range(4f, 0.01f)]
         [SerializeField]
-        private float ClockSpeed = 1f;
-
-        // === Properties ===
-        private int dayLength { get { return dayEndTime - dayStartTime; } }
-        private float sunDayRotationPerMinute { get { return 180f / dayLength; } }
-        private float sunNightRotationPerMinute { get { return 180f / (1440 - dayLength); } }
-
+        private float clockSpeed = 1f;
         
-
-        //===============================
-        // === Public Methods ===
-        //===============================
+        private float _secondCounter = 0;
+        // === Properties ===
+        private int DayLength { get { return dayEndTime - dayStartTime; } }
+        private float SunDayRotationPerMinute { get { return 180f / DayLength; } }
+        private float SunNightRotationPerMinute { get { return 180f / (1440 - DayLength); } }
 
         public int TimeOfDay
         {
@@ -45,12 +38,11 @@ namespace ManExe.World
                 timeOfDay = value;
                 if (timeOfDay >= 1440)
                 {
-                    Day += timeOfDay / 1440;
+                    day += timeOfDay / 1440;
                     timeOfDay %= 1440;
 
                 }
 
-                UpdateClock();
 
                 float rotAmount;
 
@@ -59,7 +51,7 @@ namespace ManExe.World
                 if (timeOfDay > dayStartTime && timeOfDay < dayEndTime)
                 {
 
-                    rotAmount = (timeOfDay - dayStartTime) * sunDayRotationPerMinute;
+                    rotAmount = (timeOfDay - dayStartTime) * SunDayRotationPerMinute;
 
                     // At the end of the "day" we switch to night rotation speed, but in order to keep the rotation
                     // seamless, we need to account for the daytime rotation as well.
@@ -68,9 +60,9 @@ namespace ManExe.World
                 {
 
                     // Calculate the amount of rotation through the day so far.
-                    rotAmount = dayLength * sunDayRotationPerMinute;
+                    rotAmount = DayLength * SunDayRotationPerMinute;
                     // Add the rotation since the end of the day.
-                    rotAmount += ((timeOfDay - dayStartTime - dayLength) * sunNightRotationPerMinute);
+                    rotAmount += ((timeOfDay - dayStartTime - DayLength) * SunNightRotationPerMinute);
 
                     // Else we're at the start of a new day but because we're still in the same rotation cycle, we need to
                     // to account for all the previous rotation since dayStartTime the previous day.
@@ -78,37 +70,43 @@ namespace ManExe.World
                 else
                 {
 
-                    rotAmount = dayLength * sunDayRotationPerMinute; // Previous day's rotation.
-                    rotAmount += (1440 - dayEndTime) * sunNightRotationPerMinute; // Previous night's rotation.
-                    rotAmount += timeOfDay * sunNightRotationPerMinute; // Rotation since midnight.
+                    rotAmount = DayLength * SunDayRotationPerMinute; // Previous day's rotation.
+                    rotAmount += (1440 - dayEndTime) * SunNightRotationPerMinute; // Previous night's rotation.
+                    rotAmount += timeOfDay * SunNightRotationPerMinute; // Rotation since midnight.
 
                 }
 
                 sun.eulerAngles = new Vector3(rotAmount, 0f, 0f);
             }
         }
-
-        // === Private Methods ===
         //===============================
-
-        private void UpdateClock()
+        // === MonoBehaviour Methods ===
+        //===============================
+        private void Update()
+        {
+            _secondCounter += Time.deltaTime;
+            if (_secondCounter >= clockSpeed)
+            {
+                TimeOfDay += (int)(_secondCounter / clockSpeed);
+                _secondCounter %= clockSpeed;
+            }
+        }
+        
+        // === Public Methods ===
+        //===============================
+        
+        public string GetTimeFormatted()
         {
             int hours = TimeOfDay / 60;
             int minutes = TimeOfDay % 60;
 
-            clock.text = string.Format("Day: {0} Time: {1}:{2}", Day.ToString(), hours.ToString("D2"), minutes.ToString("D2"));
+            return string.Format("Day: {0} Time: {1}:{2}", day.ToString(), hours.ToString("D2"), minutes.ToString("D2"));
         }
+        
+        // === Private Methods ===
+        //===============================
 
-        private float secondCounter = 0;
-        private void Update()
-        {
-            secondCounter += Time.deltaTime;
-            if (secondCounter >= ClockSpeed)
-            {
-                TimeOfDay += (int)(secondCounter / ClockSpeed);
-                secondCounter %= ClockSpeed;
-            }
-        }
+        
     }
 
 

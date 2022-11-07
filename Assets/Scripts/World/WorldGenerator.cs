@@ -50,7 +50,7 @@ namespace ManExe.World
 
             for(int x = 0; x < world.Settings.WorldSizeInChunksX; x++)
             {
-                for (int z = 0; z < world.Settings.WorldSizeInChunksY; z++)
+                for (int z = 0; z < world.Settings.WorldSizeInChunksZ; z++)
                 {
                     Vector3Int chunkPos = new Vector3Int(x * GameData.ChunkWidth, 0, z * GameData.ChunkWidth);
                     Chunk chunk = world.AddChunk(chunkPos,heightMap);
@@ -59,11 +59,11 @@ namespace ManExe.World
                 }
             }
             
-            Debug.Log(string.Format("{0} x {1} world generated.", world.WorldSizeInVoxelsX, world.WorldSizeInVoxelsY));
+            Debug.Log(string.Format("{0} x {1} world generated.", world.WorldSizeInVoxelsX, world.WorldSizeInVoxelsZ));
 
-            world.SpawnPosition = new Vector3(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2, 
-                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2] + 10, 
-                GameData.ChunkWidth * world.Settings.WorldSizeInChunksY / 2);
+            world.SpawnPosition = new Vector3((int)(GameData.ChunkWidth * world.Settings.WorldSizeInChunksX /2), 
+                heightMap[GameData.ChunkWidth * world.Settings.WorldSizeInChunksX / 2, GameData.ChunkWidth * world.Settings.WorldSizeInChunksZ / 2] + 10, 
+                (int)(GameData.ChunkWidth * world.Settings.WorldSizeInChunksZ / 2));
             _player.GetComponent<CharacterController>().Move( new Vector3(world.SpawnPosition.x,world.SpawnPosition.y,world.SpawnPosition.z));
             loadingScreen.SetActive(false);
         }

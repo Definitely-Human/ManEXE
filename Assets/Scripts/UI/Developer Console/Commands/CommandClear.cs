@@ -21,7 +21,7 @@ namespace ManExe.UI.Developer_Console.Commands
                    "No arguments.";
             
         }
-        public override void RunCommand(string[] args)
+        public override void RunCommand(string[] argsArr)
         {
             DevCon.ClearConsole();
         }

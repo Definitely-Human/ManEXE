@@ -20,24 +20,24 @@ namespace ManExe.Noise
         {
 			Clear();
 			textureRender = GameObject.CreatePrimitive(PrimitiveType.Plane).GetComponent<Renderer>();
-			textureRender.gameObject.transform.position = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth/2, 0, levelSettings.WorldSizeInChunksY * GameData.ChunkWidth/2);
+			textureRender.gameObject.transform.position = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth/2, 0, levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth/2);
 			textureRender.gameObject.transform.rotation = Quaternion.identity;
-			textureRender.gameObject.transform.RotateAround(new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 2, 0, levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 2), transform.up, 180);
+			textureRender.gameObject.transform.RotateAround(new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 2, 0, levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth / 2), transform.up, 180);
 			textureRender.gameObject.transform.SetParent(transform);
 			
 			textureRender.transform.localScale = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 10,
 				1,
-				levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 10);
+				levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth / 10);
 		}
 
         public void DrawNoiseMap(float[,] noiseMap = null)
 		{
 			if (textureRender == null)
 				return;
-			textureRender.gameObject.transform.position = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 2, 0, levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 2);
+			textureRender.gameObject.transform.position = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 2, 0, levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth / 2);
 			textureRender.transform.localScale = new Vector3(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth / 10,
 				1,
-				levelSettings.WorldSizeInChunksY * GameData.ChunkWidth / 10);
+				levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth / 10);
 
 			noiseMap = Noise.GenerateNoise(levelSettings);
 

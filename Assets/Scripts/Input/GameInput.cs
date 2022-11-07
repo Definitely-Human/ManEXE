@@ -417,6 +417,15 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Outliners"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0b6aedf-7e96-4cb7-82d2-12fb81162736"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -450,6 +459,17 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SaveLoadMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""096acb6b-db9c-4dba-94e1-636077dd80a5"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Outliners"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -486,6 +506,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_Cheats_DebugMenu = m_Cheats.FindAction("DebugMenu", throwIfNotFound: true);
         m_Cheats_Console = m_Cheats.FindAction("Console", throwIfNotFound: true);
         m_Cheats_SaveLoadMenu = m_Cheats.FindAction("SaveLoadMenu", throwIfNotFound: true);
+        m_Cheats_Outliners = m_Cheats.FindAction("Outliners", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -702,6 +723,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Cheats_DebugMenu;
     private readonly InputAction m_Cheats_Console;
     private readonly InputAction m_Cheats_SaveLoadMenu;
+    private readonly InputAction m_Cheats_Outliners;
     public struct CheatsActions
     {
         private @GameInput m_Wrapper;
@@ -709,6 +731,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         public InputAction @DebugMenu => m_Wrapper.m_Cheats_DebugMenu;
         public InputAction @Console => m_Wrapper.m_Cheats_Console;
         public InputAction @SaveLoadMenu => m_Wrapper.m_Cheats_SaveLoadMenu;
+        public InputAction @Outliners => m_Wrapper.m_Cheats_Outliners;
         public InputActionMap Get() { return m_Wrapper.m_Cheats; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -727,6 +750,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @SaveLoadMenu.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
                 @SaveLoadMenu.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
                 @SaveLoadMenu.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnSaveLoadMenu;
+                @Outliners.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnOutliners;
+                @Outliners.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnOutliners;
+                @Outliners.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnOutliners;
             }
             m_Wrapper.m_CheatsActionsCallbackInterface = instance;
             if (instance != null)
@@ -740,6 +766,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @SaveLoadMenu.started += instance.OnSaveLoadMenu;
                 @SaveLoadMenu.performed += instance.OnSaveLoadMenu;
                 @SaveLoadMenu.canceled += instance.OnSaveLoadMenu;
+                @Outliners.started += instance.OnOutliners;
+                @Outliners.performed += instance.OnOutliners;
+                @Outliners.canceled += instance.OnOutliners;
             }
         }
     }
@@ -777,5 +806,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         void OnDebugMenu(InputAction.CallbackContext context);
         void OnConsole(InputAction.CallbackContext context);
         void OnSaveLoadMenu(InputAction.CallbackContext context);
+        void OnOutliners(InputAction.CallbackContext context);
     }
 }

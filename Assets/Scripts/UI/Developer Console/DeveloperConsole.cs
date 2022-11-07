@@ -83,7 +83,7 @@ namespace ManExe.UI.Developer_Console
 
             Instance = this;
             Commands = new Dictionary<string, ConsoleCommand>();
-            _inputReader = Resources.Load<InputReader>("Input/Default Input Reader");// Loading multiple times may cause problem with reading input
+            _inputReader = Resources.Load<InputReader>("Input/Default Input Reader");   
         }
 
         private void Start()
@@ -95,7 +95,7 @@ namespace ManExe.UI.Developer_Console
             var secondary = "#B3E6F9";
 
             consoleText.text = "---------------------------------------------------------------------------------\n" +
-                                $"<size=30><color={primary}>Starting Developer Console</color></size> \n" +
+                                $"<size=60><color={primary}>Starting Developer Console</color></size> \n" +
                                 "---------------------------------------------------------------------------------\n\n" +
                                 "Type <color=orange>help</color> for list of available commands. \n" +
                                 "Type <color=orange><command> -help </color> for command details. \n" +
@@ -193,6 +193,7 @@ namespace ManExe.UI.Developer_Console
             AddCommandToConsole(new CommandClear());
             AddCommandToConsole(new CommandHelp());
             AddCommandToConsole(new CommandGive());
+            AddCommandToConsole(new CommandVoxel());    
             
         }
         private void StoreCommandToClipboard(string command)

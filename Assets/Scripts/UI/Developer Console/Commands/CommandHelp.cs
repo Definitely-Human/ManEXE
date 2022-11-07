@@ -21,7 +21,7 @@ namespace ManExe.UI.Developer_Console.Commands
             Help = "Use this command to seek help.";
             
         }
-        public override void RunCommand(string[] args)
+        public override void RunCommand(string[] argsArr)
         {
             
             DevCon.AddMessageToConsole("" +

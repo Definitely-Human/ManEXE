@@ -7,7 +7,7 @@ namespace ManExe.Entity.StateMachine
     public class PlayerStateMachine : MonoBehaviour
     {
         // Reference variables
-        private InputReader _inputReader;
+        public InputReader _inputReader;
         private CharacterController _characterController;
         private Animator _animator;
         private Transform _cameraMainTransform;
@@ -49,6 +49,7 @@ namespace ManExe.Entity.StateMachine
         private bool _isJumping = false;
         private bool _requireNewJumpPress = false;
         private int _jumpCount = 1;
+        private int _playerReach = 10;
 
         private Dictionary<int, float> _initialJumpVelocities = new Dictionary<int, float>();
         private Dictionary<int, float> _jumpGravities = new Dictionary<int, float>();
@@ -89,6 +90,7 @@ namespace ManExe.Entity.StateMachine
         public float Gravity { get => _gravity; }
         public float RunMultiplier { get => _runMultiplier; set => _runMultiplier = value; }
         public float FallSpeedLimit { get => _fallSpeedLimit; }
+        public int PlayerReach{get => _playerReach;}
 
         //=====================
         // MonoBehavior methods
@@ -151,9 +153,9 @@ namespace ManExe.Entity.StateMachine
                 Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
                 RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit, 10, _layerMask))
+                if (Physics.Raycast(ray, out hit, _playerReach, _layerMask))
                 {
-                    _world.GetChunkFromVector3(hit.transform.position).PlaceTerrain(hit.point);
+                    _world.PlaceTerrain(hit.point);
                 }
                 _requrePlaceBlock = false;
             }
@@ -163,9 +165,9 @@ namespace ManExe.Entity.StateMachine
                 Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1f));
                 RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit, 10, _layerMask))
+                if (Physics.Raycast(ray, out hit, _playerReach, _layerMask))
                 {
-                    _world.GetChunkFromVector3(hit.transform.position).RemoveTerrain(hit.point);
+                    _world.RemoveTerrain(hit.point);
                 }
                 _requreBreakBlock = false;
             }

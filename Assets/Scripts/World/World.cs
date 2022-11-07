@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ManExe.Core;
 using ManExe.Data;
 using ManExe.Scriptable_Objects;
@@ -37,7 +38,7 @@ namespace ManExe.World
         public Vector3 SpawnPosition { get { return _spawnPosition; } set { _spawnPosition = value; } }
 
         public int WorldSizeInVoxelsX { get { return Settings.WorldSizeInChunksX * GameData.ChunkWidth; } }
-        public int WorldSizeInVoxelsY { get { return Settings.WorldSizeInChunksX * GameData.ChunkWidth; } }
+        public int WorldSizeInVoxelsZ { get { return Settings.WorldSizeInChunksZ * GameData.ChunkWidth; } }
 
         public GameObject Placements {
             get { 
@@ -70,7 +71,7 @@ namespace ManExe.World
                 PopulateTextureArray();
             if (_terrainTextures.Length > 0)
                 PopulateNormalArray(); 
-             worldData = new WorldData("Default", Settings.Seed);
+            worldData = new WorldData("Default", Settings.Seed);
         }
 
 
@@ -84,18 +85,70 @@ namespace ManExe.World
 
         }
 
-        public Chunk GetChunkFromVector3(Vector3 _pos)
+        public Chunk GetChunkFromVector3(Vector3 pos)
         {
-            int x = (int)_pos.x;
-            int y = (int)_pos.y;
-            int z = (int)_pos.z;
+            int x = (int)pos.x;
+            int y = (int)pos.y;
+            int z = (int)pos.z;
 
             return worldData.Chunks[new Vector3Int(x, y, z)];
         }
 
+        public Chunk GetChunkFromVector3Validated(Vector3 pos)
+        {
+            Vector3 chunkPos = GetChunkPosFromVector3(pos);
+            return GetChunkFromVector3(chunkPos);
+        }
+
+        
+
+        public void PlaceTerrain(Vector3 pos)
+        {
+            GetChunkFromVector3Validated(pos).PlaceTerrain(pos);
+        }
+        
+        public void RemoveTerrain(Vector3 pos)
+        {
+            GetChunkFromVector3Validated(pos).RemoveTerrain(pos);
+        }
+
+        public void DrawTerrain(Vector3 pos, Vector3 size)
+        {
+            List<Chunk> selectedChunks = SelectChunksInArea(pos,size);
+            foreach (var chunk in selectedChunks)
+            {
+                Debug.Log("Selected chunk:" + chunk.Position);
+                chunk.DrawTerrain(pos,size);
+            }
+        }
+        
+        
+        
+
         // === Private Methods ===
         //===============================
-
+        private Vector3Int GetChunkPosFromVector3(Vector3 pos)
+        {
+            return new Vector3Int((int)(pos.x - pos.x % GameData.ChunkWidth), 0, (int)(pos.z - pos.z % GameData.ChunkWidth));
+        }
+        private List<Chunk> SelectChunksInArea(Vector3 pos, Vector3 size)
+        {
+            List<Chunk> selectedChunks = new List<Chunk>();
+            int xLength = Mathf.CeilToInt(size.x / GameData.ChunkWidth);
+            int zLength = Mathf.CeilToInt(size.z / GameData.ChunkWidth);
+            Vector3Int origin = GetChunkPosFromVector3(pos);
+            for (int i = 0; i <= xLength; i++)
+            {
+                for (int j = 0; j <= zLength; j++)
+                {
+                    selectedChunks.Add(worldData.Chunks[new Vector3Int(
+                        origin.x + i*GameData.ChunkWidth, origin.y,origin.z+j*GameData.ChunkWidth)]);
+                }
+            }
+            
+            return selectedChunks;
+        }
+        
         private void PopulateTextureArray()
         {
             _terrainTexArray = new Texture2DArray(TextureArrayWidth, TextureArrayWidth, _terrainTextures.Length, TextureFormat.ARGB32, false);

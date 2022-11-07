@@ -79,7 +79,7 @@ namespace ManExe.Noise
         public static float[,] GenerateNoise(LevelSettings levelSettings)
         {
             float[,] noiseMap = GenerateNoise(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth + 1,
-                levelSettings.WorldSizeInChunksY * GameData.ChunkWidth + 1,
+                levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth + 1,
                 levelSettings.Seed,
                 levelSettings.NoiseSettings.Scale,
                 levelSettings.NoiseSettings.Octaves,
@@ -108,7 +108,7 @@ namespace ManExe.Noise
         public static float[,] GenerateNoiseMap(LevelSettings levelSettings)
         {
             float[,] noiseMap = GenerateNoiseMap(levelSettings.WorldSizeInChunksX * GameData.ChunkWidth + 1,
-                levelSettings.WorldSizeInChunksY * GameData.ChunkWidth + 1,
+                levelSettings.WorldSizeInChunksZ * GameData.ChunkWidth + 1,
                 levelSettings.TerrainHeightRange,
                 levelSettings.BaseTerrainHeight,
                 levelSettings.Seed,

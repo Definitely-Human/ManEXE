@@ -20,7 +20,7 @@ namespace ManExe.UI.Developer_Console.Commands
             Help = "Use this command to force quit the application.";
             
         }
-        public override void RunCommand(string[] args)
+        public override void RunCommand(string[] argsArr)
         {
             
             if (Application.isEditor)

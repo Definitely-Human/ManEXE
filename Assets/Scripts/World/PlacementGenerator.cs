@@ -25,7 +25,7 @@ namespace ManExe.World
         private void Awake()
         {
             XRange = new Vector2(0, World.WorldSizeInVoxelsX);
-            ZRange = new Vector2(0, World.WorldSizeInVoxelsY);
+            ZRange = new Vector2(0, World.WorldSizeInVoxelsZ);
         }
 
         public void Generate()
@@ -34,7 +34,7 @@ namespace ManExe.World
             
             for (int n = 0; n < Placements.Length; n++)
             {
-                int densityCalculated = Mathf.FloorToInt(Density * Placements[n].Density * World.Settings.WorldSizeInChunksX * World.Settings.WorldSizeInChunksY);
+                int densityCalculated = Mathf.FloorToInt(Density * Placements[n].Density * World.Settings.WorldSizeInChunksX * World.Settings.WorldSizeInChunksZ);
                 for (int i = 0; i < densityCalculated; i++)
                 {
                     float sampleX = Random.Range(XRange.x, XRange.y);

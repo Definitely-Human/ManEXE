@@ -395,6 +395,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Outliners",
+                    "type": "Button",
+                    "id": "b0b6aedf-7e96-4cb7-82d2-12fb81162736",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -428,6 +437,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SaveLoadMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "096acb6b-db9c-4dba-94e1-636077dd80a5",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Outliners",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

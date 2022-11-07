@@ -51,6 +51,8 @@ namespace ManExe.Scriptable_Objects
         public event UnityAction ConsoleVisibilityEvent = delegate { };
 
         public event UnityAction SaveLoadMenuEvent = delegate { };
+        
+        public event UnityAction OutlinersEvent = delegate { };
 
         // Private fields
         private GameInput _gameInput;
@@ -220,6 +222,11 @@ namespace ManExe.Scriptable_Objects
         public void OnSaveLoadMenu(InputAction.CallbackContext context)
         {
             SaveLoadMenuEvent?.Invoke();
+        }
+
+        public void OnOutliners(InputAction.CallbackContext context)
+        {
+            OutlinersEvent?.Invoke();
         }
     }
 }
