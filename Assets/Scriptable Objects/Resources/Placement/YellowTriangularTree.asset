@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Big Green Tree
   _id: 6
-  _prefab: {fileID: 3899312326806784372, guid: f5f6e019c3ad0794dba2a9d5e35bf03b, type: 3}
+  _prefab: {fileID: 586744555694444027, guid: 6301d983cc9c2aa448d716d1127eedd7, type: 3}
   rotateTwardsNormal: 0.102
   _rotationRange: {x: 0, y: 360}
   _minScale: {x: 0.9, y: 0.9, z: 0.9}
