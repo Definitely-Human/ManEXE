@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: BigGreenTree
   m_EditorClassIdentifier: 
   _name: Big Green Tree
+  _id: 0
   _prefab: {fileID: 8467062570689845135, guid: f85dfca6d2309ba44855b087c4d686fd, type: 3}
-  _density: 10
-  _minHeight: 75
-  _maxHeight: 90
   rotateTwardsNormal: 0.102
   _rotationRange: {x: 0, y: 360}
   _minScale: {x: 0.9, y: 0.9, z: 0.9}

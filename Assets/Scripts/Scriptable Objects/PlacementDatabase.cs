@@ -16,11 +16,11 @@ namespace ManExe.Scriptable_Objects
 
             List<PlacementSettings> foundItems = Resources.LoadAll<PlacementSettings>("Placement").OrderBy(i => i.ID).ToList();
 
-
+            
             List<PlacementSettings> hasIdInRange = foundItems.Where(i => i.ID > -1 && i.ID < foundItems.Count).OrderBy(i => i.ID).ToList();
             List<PlacementSettings> hasIdNotInRange = foundItems.Where(i => i.ID > -1 && i.ID >= foundItems.Count).OrderBy(i => i.ID).ToList();
             List<PlacementSettings> noId = foundItems.Where(i => i.ID <= -1 ).ToList();
-
+            
             int index = 0;
             for (int i = 0;i < foundItems.Count; i++)
             {
@@ -34,13 +34,18 @@ namespace ManExe.Scriptable_Objects
                 {
                     noId[index].ID = i;
                     itemToAdd = noId[index];
-                    index++;
                     placementDatabase.Add(itemToAdd);
+                    index++;
                 }
-                foreach(var item in hasIdNotInRange)
-                {
-                    placementDatabase.Add(item);
-                }
+                
+            }
+
+            index = noId.Count + hasIdInRange.Count;// set index to size of tho array that were already used
+            foreach(var item in hasIdNotInRange)
+            {
+                item.ID = index;
+                index++;
+                placementDatabase.Add(item);
             }
         }
         public PlacementSettings GetItem(int id)

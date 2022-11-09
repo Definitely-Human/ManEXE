@@ -7,12 +7,12 @@ namespace ManExe.Scriptable_Objects
     [CreateAssetMenu(fileName = "New ItemDatabase", menuName = "Scriptable/ItemDatabase", order = 0)]
     public class ItemDatabase : ScriptableObject
     {
-        [SerializeField] private List<InventoryItemData> _itemDatabase;
+        [SerializeField] private List<InventoryItemData> itemDatabase;
         
         [ContextMenu("Set ID")]
         public void SetItemIDs() // This method can be executed by right clicking item name in the inspector and selecting 'Set ID'
         {
-            _itemDatabase = new List<InventoryItemData>();
+            itemDatabase = new List<InventoryItemData>();
 
             List<InventoryItemData> foundItems = Resources.LoadAll<InventoryItemData>("InventoryItemData").OrderBy(i => i.ID).ToList();
 
@@ -28,24 +28,27 @@ namespace ManExe.Scriptable_Objects
 
                 if(itemToAdd != null)
                 {
-                    _itemDatabase.Add(itemToAdd);
+                    itemDatabase.Add(itemToAdd);
                 }
                 else if(index < noId.Count)
                 {
                     noId[index].ID = i;
                     itemToAdd = noId[index];
                     index++;
-                    _itemDatabase.Add(itemToAdd);
+                    itemDatabase.Add(itemToAdd);
                 }
-                foreach(var item in hasIdNotInRange)
-                {
-                    _itemDatabase.Add(item);
-                }
+                
+            }
+            foreach(var item in hasIdNotInRange)
+            {
+                item.ID = index;
+                index++;
+                itemDatabase.Add(item);
             }
         }
         public InventoryItemData GetItem(int id)
         {
-            return _itemDatabase.Find(i => i.ID == id);
+            return itemDatabase.Find(i => i.ID == id);
         }
     }
 }

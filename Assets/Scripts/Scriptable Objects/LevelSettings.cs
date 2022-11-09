@@ -18,6 +18,8 @@ namespace ManExe.Scriptable_Objects
         [Space]
         [SerializeField] private PlacableConfigData[] placableConfigData;
 
+        [SerializeField] private PlacementDatabase database;
+
         public int Seed { get => seed;
             set => seed = value;
         }
@@ -33,6 +35,12 @@ namespace ManExe.Scriptable_Objects
         public int BaseTerrainHeight { get => baseTerrainHeight; set => baseTerrainHeight = value; }
         public int TerrainHeightRange { get => terrainHeightRange; set => terrainHeightRange = value; }
         public PlacableConfigData[] PlacableConfigData => placableConfigData;
+
+        public PlacementSettings GetPlacableSettingsFromDatabase(int id)
+        {
+             return database.GetItem(id);
+        }
+        
 #if UNITY_EDITOR
         protected override void OnValidate()
         {

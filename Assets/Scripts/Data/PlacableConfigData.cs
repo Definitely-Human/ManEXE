@@ -7,7 +7,7 @@ namespace ManExe.Data
     [System.Serializable]
     public struct PlacableConfigData 
     {
-        public PlacementSettings PlacementSettings;
+        public int placementSettingsId;
         [SerializeField]
         private int _density;
         [SerializeField]
@@ -37,5 +37,7 @@ namespace ManExe.Data
                     _minHeight = value;
             }
         }
+
+        
     }
 }

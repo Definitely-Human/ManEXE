@@ -46,16 +46,17 @@ namespace ManExe.World
 
                     if (hit.point.y < Placements[n].MinHeight)
                         continue;
-
-                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(Placements[n].PlacementSettings.Prefab, World.Placements.transform);
+                    var placementSettings =
+                        _world.Settings.GetPlacableSettingsFromDatabase(Placements[n].placementSettingsId);
+                    GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(placementSettings.Prefab, World.Placements.transform);
                     instantiatedPrefab.transform.position = hit.point;
-                    instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(Placements[n].PlacementSettings.RotationRange.x, Placements[n].PlacementSettings.RotationRange.y), Space.Self);
+                    instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(placementSettings.RotationRange.x, placementSettings.RotationRange.y), Space.Self);
                     instantiatedPrefab.transform.rotation = Quaternion.Lerp(transform.rotation,
-                        transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), Placements[n].PlacementSettings.RotateTwardsNormal);
+                        transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), placementSettings.RotateTwardsNormal);
                     instantiatedPrefab.transform.localScale = new Vector3(
-                        Random.Range(Placements[n].PlacementSettings.MinScale.x, Placements[n].PlacementSettings.MaxScale.x),
-                        Random.Range(Placements[n].PlacementSettings.MinScale.y, Placements[n].PlacementSettings.MaxScale.y),
-                        Random.Range(Placements[n].PlacementSettings.MinScale.z, Placements[n].PlacementSettings.MaxScale.z)
+                        Random.Range(placementSettings.MinScale.x, placementSettings.MaxScale.x),
+                        Random.Range(placementSettings.MinScale.y, placementSettings.MaxScale.y),
+                        Random.Range(placementSettings.MinScale.z, placementSettings.MaxScale.z)
                     );
                 }
             }
