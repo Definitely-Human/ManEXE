@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574be693a8412f4499a6cf26d3ff8f21, type: 3}
+  m_Name: sPL_Lopuh_Quadro
+  m_EditorClassIdentifier: 
+  _name: Lopuh Quadro
+  _id: 8
+  _prefab: {fileID: 71326144376176890, guid: 91e4a95887e3cab46bd02e3ad311fc19, type: 3}
+  rotateTwardsNormal: 0.102
+  _rotationRange: {x: 0, y: 360}
+  _minScale: {x: 0.9, y: 0.9, z: 0.9}
+  _maxScale: {x: 1.1, y: 1.1, z: 1.1}

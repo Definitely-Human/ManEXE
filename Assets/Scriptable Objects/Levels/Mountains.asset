@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   seed: 169
-  worldSizeInChunksX: 15
-  worldSizeInChunksZ: 15
+  worldSizeInChunksX: 10
+  worldSizeInChunksZ: 10
   noiseSettings: {fileID: 11400000, guid: 40cc1b773134ba54dab31815b9e46cf2, type: 2}
   baseTerrainHeight: 40
   terrainHeightRange: 160
@@ -48,4 +48,16 @@ MonoBehaviour:
     _density: 10
     _minHeight: 80
     _maxHeight: 130
+  - placementSettingsId: 8
+    _density: 20
+    _minHeight: 135
+    _maxHeight: 160
+  - placementSettingsId: 9
+    _density: 20
+    _minHeight: 135
+    _maxHeight: 160
+  - placementSettingsId: 10
+    _density: 50
+    _minHeight: 135
+    _maxHeight: 160
   database: {fileID: 11400000, guid: d95828b48e6a9f640bae2ca1b031e8e0, type: 2}
